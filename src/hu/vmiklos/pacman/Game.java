@@ -6,7 +6,7 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-public class Game extends Canvas implements Runnable {
+public class Game extends Canvas {
 	private int width;
 	private int height;
 	private int devWidth;
@@ -87,23 +87,9 @@ public class Game extends Canvas implements Runnable {
 		blocksize = 24;
 		ratio = (float)Math.min(devHeight-font.getHeight(), devWidth) / Math.max(height, width);
 	}
-
-	public void run() {
-		long  starttime;
-
-		initLevel();
-		while(true) {
-			starttime=System.currentTimeMillis();
-			try {
-				if (!paused)
-					repaint();
-				// 25fps -> wait at least 40ms if repaint() was faster
-				starttime += 40;
-				Thread.sleep(Math.max(0, starttime-System.currentTimeMillis()));
-			} catch(java.lang.InterruptedException ie) {
-				break;
-			}
-		}
+	
+	public boolean getPaused() {
+		return paused;
 	}
 
 	public void start() {
@@ -127,6 +113,29 @@ public class Game extends Canvas implements Runnable {
 	public void resume() {
 		hint = "Game resumed!";
 		paused = false;
+	}
+
+	// resets the state of the level (after a death, etc)
+	public void initLevel() {
+		short i;
+		int dx = 1;
+
+		for (i = 0; i < ghostnum; i++) {
+			ghostx[i] = 7 * blocksize;
+			ghosty[i] = 6 * blocksize;
+			ghostdx[i] = dx;
+			ghostdy[i] = 0;
+			dx = - dx;
+			ghostspeed[i] = validspeeds[currentspeed - 3];
+		}
+		pacmanx = 7 * blocksize;
+		pacmany = 9 * blocksize;
+		pacmandx = 0;
+		pacmandy = 0;
+		reqdx = 0;
+		reqdy = 0;
+		dying = false;
+		scared = false;
 	}
 
 	protected void keyPressed(int key) {
@@ -365,29 +374,6 @@ public class Game extends Canvas implements Runnable {
 		ghostnum = 6;
 		currentspeed = 4;
 		drawMaze();
-	}
-
-	// resets the state of the level (after a death, etc)
-	private void initLevel() {
-		short i;
-		int dx = 1;
-
-		for (i = 0; i < ghostnum; i++) {
-			ghostx[i] = 7 * blocksize;
-			ghosty[i] = 6 * blocksize;
-			ghostdx[i] = dx;
-			ghostdy[i] = 0;
-			dx = - dx;
-			ghostspeed[i] = validspeeds[currentspeed - 3];
-		}
-		pacmanx = 7 * blocksize;
-		pacmany = 9 * blocksize;
-		pacmandx = 0;
-		pacmandy = 0;
-		reqdx = 0;
-		reqdy = 0;
-		dying = false;
-		scared = false;
 	}
 
 	// draws the maze from scratch (after a death, after a completed level)

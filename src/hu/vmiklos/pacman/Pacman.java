@@ -16,7 +16,7 @@ public class Pacman extends MIDlet
 		commandHandler = new CommandHandler(this);
 		game.setCommandListener(commandHandler);
 		Display.getDisplay(this).setCurrent(game);
-		Thread myThread = new Thread(game);
+		Thread myThread = new Thread(new ThreadHandler(game));
 		myThread.start();
 	}
 
