@@ -140,10 +140,6 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	private int toPixel(float p) {
-		return (int)(p * ratio);
-	}
-	
 	protected void paint(Graphics g) {
 		int x, y;
 		short i = 0;
@@ -341,6 +337,15 @@ public class Game extends Canvas implements Runnable {
 		graphics.drawString("Score: " + score, 0, toPixel(height)+((devHeight-toPixel(height)-font.getHeight())/2),
 				Graphics.TOP | Graphics.LEFT);
 		g.drawImage(image, 0, 0, 0);
+	}
+
+	/**
+	 * Converts our device independent pixels to real ones.
+	 * 
+	 * Note that the target canvas is smaller than the one of the device to allow space for the status bar.
+	 */
+	private int toPixel(float p) {
+		return (int)(p * ratio);
 	}
 
 	// starts a demo or a game
