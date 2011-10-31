@@ -192,7 +192,6 @@ public class Game extends Canvas implements Runnable {
 				i++;
 			}
 		}
-		// TODO: draw some score
 		if(started) {
 			// play the game
 			if (dying) {
@@ -412,7 +411,6 @@ public class Game extends Canvas implements Runnable {
 		}
 		if (finished) {
 			score += 50;
-			// TODO: draw some score
 			try { 
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -420,7 +418,7 @@ public class Game extends Canvas implements Runnable {
 			if (ghostnum < maxghosts)
 				ghostnum++; 
 			if (currentspeed<maxspeed)
-				currentspeed++;
+				currentspeed+=2;
 			scaredtime=scaredtime-20;
 			if (scaredtime<minscaredtime)
 				scaredtime=minscaredtime;
