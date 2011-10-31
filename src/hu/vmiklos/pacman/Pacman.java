@@ -18,8 +18,7 @@ public class Pacman extends MIDlet implements CommandListener
 	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 4);
 	private Command okCmd = new Command("OK", Command.SCREEN, 1);
 
-	public Pacman()
-	{
+	public Pacman() {
 		game = new Game();
 		game.addCommand(startCmd);
 		game.addCommand(helpCmd);
@@ -28,33 +27,26 @@ public class Pacman extends MIDlet implements CommandListener
 		game.setCommandListener(this);
 	}
 
-	public void startApp()
-	{
+	public void startApp() {
 		Display.getDisplay(this).setCurrent(game);
 		Thread myThread = new Thread(game);
 		myThread.start();
 	}
 
-	public void pauseApp()
-	{
+	public void pauseApp() {
 	}
 
-	public void destroyApp(boolean unconditional)
-	{
+	public void destroyApp(boolean unconditional) {
 		Display.getDisplay(this).setCurrent(null);
 	}
 
-	public void commandAction(Command c, Displayable s)
-	{
-		if (c == exitCmd)
-		{
+	public void commandAction(Command c, Displayable s) {
+		if (c == exitCmd) {
 			destroyApp(false);
 			notifyDestroyed();
 		}
-		else if (c == helpCmd)
-		{
-			Item[] levelItem =
-			{
+		else if (c == helpCmd) {
+			Item[] levelItem = {
 				new StringItem("", "Guide the yellow Pacman around the maze and eat all the little black dots whilst "+
 						"avoiding those nasty red ghosts! If you like the number buttons, use 2, 4, 6 and 8 to move "+
 						"Pacman up, left, right and down, respectively.")
@@ -63,12 +55,9 @@ public class Pacman extends MIDlet implements CommandListener
 			form.addCommand(okCmd);
 			form.setCommandListener(this);
 			Display.getDisplay(this).setCurrent(form);
-		}
-		else if ((c == cancelCmd) || (c == okCmd))
-		{
+		} else if ((c == cancelCmd) || (c == okCmd)) {
 			Display.getDisplay(this).setCurrent(game);
-		}
-		else if (c == startCmd)
+		} else if (c == startCmd)
 			game.startGame();
 	}
 }
