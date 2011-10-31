@@ -5,8 +5,7 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-public class Game extends Canvas implements Runnable
-{
+public class Game extends Canvas implements Runnable {
 	int width;
 	int height;
 	Graphics graphics;
@@ -63,8 +62,7 @@ public class Game extends Canvas implements Runnable
 	};
 	short[] screendata;
 
-	public Game()
-	{
+	public Game() {
 		screendata = new short[xblocknum*yblocknum];
 		ghostx = new int[maxghosts];
 		ghostdx = new int[maxghosts];
@@ -84,8 +82,7 @@ public class Game extends Canvas implements Runnable
 	}
 
 	// starts a demo or a game
-	public void GameInit()
-	{
+	public void GameInit() {
 		pacsleft = 3;
 		score = 0;
 		scaredtime = 120;
@@ -96,13 +93,11 @@ public class Game extends Canvas implements Runnable
 	}
 
 	// resets the state of the level (after a death, etc)
-	public void LevelInit()
-	{
+	public void LevelInit() {
 		short i;
 		int dx = 1;
 
-		for (i = 0; i < ghostnum; i++)
-		{
+		for (i = 0; i < ghostnum; i++) {
 			ghostx[i] = 7 * blocksize;
 			ghosty[i] = 6 * blocksize;
 			ghostdx[i] = dx;
@@ -121,43 +116,31 @@ public class Game extends Canvas implements Runnable
 	}
 
 	// draws the maze from scratch (after a death, after a completed level)
-	public void DrawMaze()
-	{
+	public void DrawMaze() {
 		int i;
 
-		for (i = 0; i<xblocknum*yblocknum; i++)
-		{
+		for (i = 0; i<xblocknum*yblocknum; i++) {
 			screendata[i]=leveldata[i];
 		}
 	}
 
 
-	protected void keyPressed(int key)
-	{
-		if(ingame)
-		{
-			if(key == Canvas.KEY_NUM4 || key == Canvas.LEFT || key == -3)
-			{
+	protected void keyPressed(int key) {
+		if(ingame) {
+			if(key == Canvas.KEY_NUM4 || key == Canvas.LEFT || key == -3) {
 				reqdx = -1;
 				reqdy = 0;
-			}
-			else if(key == Canvas.KEY_NUM6 || key == Canvas.RIGHT || key == -4)
-			{
+			} else if(key == Canvas.KEY_NUM6 || key == Canvas.RIGHT || key == -4) {
 				reqdx = 1;
 				reqdy = 0;
-			}
-			else if(key == Canvas.KEY_NUM2 || key == Canvas.UP || key == -1)
-			{
+			} else if(key == Canvas.KEY_NUM2 || key == Canvas.UP || key == -1) {
 				reqdx = 0;
 				reqdy = -1;
-			}
-			else if(key == Canvas.KEY_NUM8 || key == Canvas.DOWN || key == -2)
-			{
+			} else if(key == Canvas.KEY_NUM8 || key == Canvas.DOWN || key == -2) {
 				reqdx = 0;
 				reqdy = 1;
 			}
-		}
-		else if(key == Canvas.KEY_NUM5 || key == Canvas.FIRE || key == -5)
+		} else if(key == Canvas.KEY_NUM5 || key == Canvas.FIRE || key == -5)
 			startGame();
 	}
 	
@@ -166,37 +149,30 @@ public class Game extends Canvas implements Runnable
 		GameInit();
 	}
 
-	protected void keyReleased(int key)
-	{
-		if (key == Canvas.KEY_NUM4 || key == Canvas.KEY_NUM6 || key == Canvas.KEY_NUM2 ||  key == Canvas.KEY_NUM8)
-		{
+	protected void keyReleased(int key) {
+		if (key == Canvas.KEY_NUM4 || key == Canvas.KEY_NUM6 || key == Canvas.KEY_NUM2 ||  key == Canvas.KEY_NUM8) {
 			reqdx = 0;
 			reqdy = 0;
 		}
 	}
 
-	public void paint(Graphics g)
-	{
+	public void paint(Graphics g) {
 		int x, y;
 		short i = 0;
 
-		if (graphics == null && width > 0 && height > 0)
-		{
+		if (graphics == null && width > 0 && height > 0) {
 			image = Image.createImage(width, height);
 			graphics = image.getGraphics();
 		}
-		if(graphics == null || image == null)
-		{
+		if(graphics == null || image == null) {
 			return;
 		}
 
 		graphics.setColor(255, 255, 255);
 		graphics.fillRect(0, 0, width, height);
 		// draw the maze
-		for(y = 0; y < blocksize*yblocknum; y += blocksize)
-		{
-			for(x = 0; x < blocksize*xblocknum; x += blocksize)
-			{
+		for(y = 0; y < blocksize*yblocknum; y += blocksize) {
+			for(x = 0; x < blocksize*xblocknum; x += blocksize) {
 				// borders
 				if(!scared)
 					graphics.setColor(0, 0, 0);
@@ -214,13 +190,11 @@ public class Game extends Canvas implements Runnable
 					graphics.drawLine(x+blocksize,y,x+blocksize,y+blocksize);
 				if ((screendata[i]&8) != 0)
 					graphics.drawLine(x,y+blocksize,x+blocksize-1,y+blocksize);
-				if ((screendata[i]&16) != 0)
-				{
+				if ((screendata[i]&16) != 0) {
 					graphics.setColor(0, 0, 0);
 					graphics.fillRect(x+blocksize/2,y+blocksize/2,1,1);
 				}
-				if ((screendata[i]&32) != 0)
-				{
+				if ((screendata[i]&32) != 0) {
 					graphics.setColor(0, 0, 255);
 					graphics.fillRect(x+1,y+1,blocksize-1,blocksize-1);
 				}
@@ -228,66 +202,51 @@ public class Game extends Canvas implements Runnable
 			}
 		}
 		// TODO: draw some score
-		if(ingame)
-		{
+		if(ingame) {
 			// play the game
-			if (dying)
-			{
+			if (dying) {
 				deathcounter--;
-				if((deathcounter%8)<4)
-				{
+				if((deathcounter%8)<4) {
 					graphics.setColor(255, 255, 255);
 					graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
 				}
-				else if((deathcounter%8)>=4)
-				{
+				else if((deathcounter%8)>=4) {
 					graphics.setColor(255, 255, 0);
 					graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
-				}
-				if(deathcounter == 0)
-				{
+				} if(deathcounter == 0) {
 					pacsleft--;
 					if(pacsleft == 0)
 						ingame = false;
 					LevelInit();
 				}
-			}
-			else
-			{
+			} else {
 				UpdateWalls();
 				// if we are not dying, we can move pacman
 				int     pos;
 				short   ch;
 
-				if (reqdx==-pacmandx && reqdy==-pacmandy)
-				{
+				if (reqdx==-pacmandx && reqdy==-pacmandy) {
 					pacmandx=reqdx;
 					pacmandy=reqdy;
-				}
-				if (pacmanx%blocksize==0 && pacmany%blocksize==0)
-				{
+				} if (pacmanx%blocksize==0 && pacmany%blocksize==0) {
 					pos=pacmanx/blocksize+xblocknum*(int)(pacmany/blocksize);
 					ch=screendata[pos];
-					if ((ch&16)!=0)
-					{
+					if ((ch&16)!=0) {
 						screendata[pos]=(short)(ch&15);
 						score++;
-					}
-					if ((ch&32)!=0)
-					{
+					} 
+					if ((ch&32)!=0) {
 						scared=true;
 						scaredcount=scaredtime;
 						screendata[pos]=(short)(ch&15);
 						score+=5;
 					}
 
-					if (reqdx!=0 || reqdy!=0)
-					{
+					if (reqdx!=0 || reqdy!=0) {
 						if (!( (reqdx==-1 && reqdy==0 && (ch&1)!=0) ||
 								(reqdx==1 && reqdy==0 && (ch&4)!=0) ||
 								(reqdx==0 && reqdy==-1 && (ch&2)!=0) ||
-								(reqdx==0 && reqdy==1 && (ch&8)!=0)))
-						{
+								(reqdx==0 && reqdy==1 && (ch&8)!=0))) {
 							pacmandx=reqdx;
 							pacmandy=reqdy;
 						}
@@ -297,8 +256,7 @@ public class Game extends Canvas implements Runnable
 					if ( (pacmandx==-1 && pacmandy==0 && (ch&1)!=0) ||
 							(pacmandx==1 && pacmandy==0 && (ch&4)!=0) ||
 							(pacmandx==0 && pacmandy==-1 && (ch&2)!=0) ||
-							(pacmandx==0 && pacmandy==1 && (ch&8)!=0))
-					{
+							(pacmandx==0 && pacmandy==1 && (ch&8)!=0)) {
 						pacmandx=0;
 						pacmandy=0;
 					}
@@ -309,76 +267,57 @@ public class Game extends Canvas implements Runnable
 				graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
 				CheckMaze();
 			}
-		}
-		else
-		{
+		} else {
 			// demo
 			UpdateWalls();
 		}
-		if(!dying)
-		{
+		if(!dying) {
 			// if we're not dying, we should move the ghosts (demo or game)
 			int pos;
 			int count;
 			int j;
 
-			for (i=0; i<ghostnum; i++)
-			{
-				if (ghostx[i]%blocksize==0 && ghosty[i]%blocksize==0)
-				{
+			for (i=0; i<ghostnum; i++) {
+				if (ghostx[i]%blocksize==0 && ghosty[i]%blocksize==0) {
 					pos=ghostx[i]/blocksize+xblocknum*(int)(ghosty[i]/blocksize);
 					count=0;
 					// no direction by default
-					for(j=0;j<4;j++)
-					{
+					for(j=0;j<4;j++) {
 						dx[j]=0;
 						dy[j]=0;
 					}
-					if ((screendata[pos]&1)==0 && ghostdx[i]!=1)
-					{
+					if ((screendata[pos]&1)==0 && ghostdx[i]!=1) {
 						dx[count]=-1;
 						dy[count]=0;
 						count++;
 					}
-					if ((screendata[pos]&2)==0 && ghostdy[i]!=1)
-					{
+					if ((screendata[pos]&2)==0 && ghostdy[i]!=1) {
 						dx[count]=0;
 						dy[count]=-1;
 						count++;
 					}
-					if ((screendata[pos]&4)==0 && ghostdx[i]!=-1)
-					{
+					if ((screendata[pos]&4)==0 && ghostdx[i]!=-1) {
 						dx[count]=1;
 						dy[count]=0;
 						count++;
 					}
-					if ((screendata[pos]&8)==0 && ghostdy[i]!=-1)
-					{
+					if ((screendata[pos]&8)==0 && ghostdy[i]!=-1) {
 						dx[count]=0;
 						dy[count]=1;
 						count++;
 					}
-					if (count==0)
-					{
-						if ((screendata[pos]&15)==15)
-						{
+					if (count==0) {
+						if ((screendata[pos]&15)==15) {
 							ghostdx[i]=0;
 							ghostdy[i]=0;
-						}
-						else
-						{
+						} else {
 							ghostdx[i]=-ghostdx[i];
 							ghostdy[i]=-ghostdy[i];
 						}
-					}
-					else
-					{
+					} else {
 						if(random == null)
-						{
 							random = new Random();
-						}
-						while(true)
-						{
+						while(true) {
 							// find a possible direction
 							count = Math.abs(random.nextInt()%4);
 							if(dx[count]==0 && dy[count]==0)
@@ -397,16 +336,12 @@ public class Game extends Canvas implements Runnable
 				graphics.fillRect(ghostx[i]+1, ghosty[i]+1, blocksize-1, blocksize-1);
 
 				if (pacmanx>(ghostx[i]-(blocksize/2)) && pacmanx<(ghostx[i]+(blocksize/2)) &&
-						pacmany>(ghosty[i]-(blocksize/2)) && pacmany<(ghosty[i]+(blocksize/2)) && ingame)
-				{
-					if (scared)
-					{
+						pacmany>(ghosty[i]-(blocksize/2)) && pacmany<(ghosty[i]+(blocksize/2)) && ingame) {
+					if (scared) {
 						score+=10;
 						ghostx[i]=7*blocksize;
 						ghosty[i]=6*blocksize;
-					}
-					else
-					{
+					} else {
 						dying=true;
 						deathcounter=64;
 					}
@@ -417,46 +352,36 @@ public class Game extends Canvas implements Runnable
 	}
 
 	// lock / unlock the ghosts
-	public void UpdateWalls()
-	{
+	public void UpdateWalls() {
 		scaredcount--;
 		if (scaredcount<=0)
 			scared=false;
 
-		if (scared)
-		{
+		if (scared) {
 			screendata[6*xblocknum+6]=11;
 			screendata[6*xblocknum+8]=14;
-		}
-		else
-		{
+		} else {
 			screendata[6*xblocknum+6]=10;
 			screendata[6*xblocknum+8]=10;
 		}
 	}
 
 	// checks if this is the end of the game or not
-	public void CheckMaze()
-	{
+	public void CheckMaze() {
 		short i=0;
 		boolean finished=true;
 
-		while (i < xblocknum * yblocknum && finished)
-		{
+		while (i < xblocknum * yblocknum && finished) {
 			if ((screendata[i]&48)!=0)
 				finished = false;
 			i++;
 		}
-		if (finished)
-		{
+		if (finished) {
 			score += 50;
 			// TODO: draw some score
-			try
-			{ 
+			try { 
 				Thread.sleep(3000);
-			}
-			catch (InterruptedException e)
-			{
+			} catch (InterruptedException e) {
 			}
 			if (ghostnum < maxghosts)
 				ghostnum++; 
@@ -470,21 +395,16 @@ public class Game extends Canvas implements Runnable
 		}
 	}
 
-	public void run()
-	{
+	public void run() {
 		long  starttime;
 
-		while(true)
-		{
+		while(true) {
 			starttime=System.currentTimeMillis();
-			try
-			{
+			try {
 				repaint();
 				starttime += 40;
 				Thread.sleep(Math.max(0, starttime-System.currentTimeMillis()));
-			}
-			catch(java.lang.InterruptedException ie)
-			{
+			} catch(java.lang.InterruptedException ie) {
 				break;
 			}
 		}
