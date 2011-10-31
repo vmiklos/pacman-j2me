@@ -26,9 +26,15 @@ public class Pacman extends MIDlet
 	}
 	
 	public void startApp() {
+		/**
+		 * Noop:
+		 * 1) If this is a real start, we did everything in the ctor already.
+		 * 2) Else we don't resume automatically, better if the user does so.
+		 */
 	}
 	
 	public void pauseApp() {
+		commandHandler.commandAction(commandHandler.getPauseCmd(), null);
 	}
 
 	public void destroyApp(boolean unconditional) {

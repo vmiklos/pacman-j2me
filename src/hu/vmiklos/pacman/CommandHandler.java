@@ -33,6 +33,10 @@ public class CommandHandler implements CommandListener {
 	public Command getStopCmd() {
 		return stopCmd;
 	}
+	
+	public Command getPauseCmd() {
+		return pauseCmd;
+	}
 
 	private void addCommand(Command c) {
 		pacman.getGame().addCommand(c);
