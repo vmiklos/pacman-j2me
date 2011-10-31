@@ -58,6 +58,6 @@ public class Pacman extends MIDlet implements CommandListener
 		} else if ((c == cancelCmd) || (c == okCmd)) {
 			Display.getDisplay(this).setCurrent(game);
 		} else if (c == startCmd)
-			game.startGame();
+			game.start();
 	}
 }

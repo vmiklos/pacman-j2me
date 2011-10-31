@@ -141,10 +141,10 @@ public class Game extends Canvas implements Runnable {
 				reqdy = 1;
 			}
 		} else if(key == Canvas.KEY_NUM5 || key == Canvas.FIRE || key == -5)
-			startGame();
+			start();
 	}
 	
-	public void startGame() {
+	public void start() {
 		ingame = true;
 		GameInit();
 	}
