@@ -158,10 +158,12 @@ public class Game extends Canvas implements Runnable
 			}
 		}
 		else if(key == Canvas.KEY_NUM5 || key == Canvas.FIRE || key == -5)
-		{
-			ingame = true;
-			GameInit();
-		}
+			startGame();
+	}
+	
+	public void startGame() {
+		ingame = true;
+		GameInit();
 	}
 
 	protected void keyReleased(int key)

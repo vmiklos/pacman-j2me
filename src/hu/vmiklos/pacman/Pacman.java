@@ -12,14 +12,16 @@ import javax.microedition.midlet.MIDlet;
 public class Pacman extends MIDlet implements CommandListener
 {
 	private Game game;
-	private Command helpCmd = new Command("Help", Command.SCREEN, 1);
-	private Command exitCmd = new Command("Exit", Command.SCREEN, 2);
-	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 3);
+	private Command startCmd = new Command("Start", Command.SCREEN, 1);
+	private Command helpCmd = new Command("Help", Command.SCREEN, 2);
+	private Command exitCmd = new Command("Exit", Command.SCREEN, 3);
+	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 4);
 	private Command okCmd = new Command("OK", Command.SCREEN, 1);
 
 	public Pacman()
 	{
 		game = new Game();
+		game.addCommand(startCmd);
 		game.addCommand(helpCmd);
 		game.addCommand(exitCmd);
 		game.addCommand(cancelCmd);
@@ -66,5 +68,7 @@ public class Pacman extends MIDlet implements CommandListener
 		{
 			Display.getDisplay(this).setCurrent(game);
 		}
+		else if (c == startCmd)
+			game.startGame();
 	}
 }
