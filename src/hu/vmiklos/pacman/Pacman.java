@@ -1,5 +1,7 @@
 package hu.vmiklos.pacman;
 
+import java.util.Vector;
+
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -18,13 +20,29 @@ public class Pacman extends MIDlet implements CommandListener
 	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 4);
 	private Command okCmd = new Command("OK", Command.SCREEN, 1);
 
+	private Vector addedCommands;
+	
 	public Pacman() {
 		game = new Game();
-		game.addCommand(startCmd);
-		game.addCommand(helpCmd);
-		game.addCommand(exitCmd);
-		game.addCommand(cancelCmd);
+		addedCommands = new Vector();
+		addCommands(startCmd);
 		game.setCommandListener(this);
+	}
+	
+	private void addCommand(Command c) {
+		game.addCommand(c);
+		addedCommands.addElement(c);
+	}
+	
+	private void addCommands(Command first) {
+		for (int i = 0; i < addedCommands.size(); i++) {
+			game.removeCommand((Command)addedCommands.elementAt(i));
+		}
+		addedCommands.removeAllElements();
+		addCommand(first);
+		addCommand(helpCmd);
+		addCommand(exitCmd);
+		addCommand(cancelCmd);
 	}
 
 	public void startApp() {
