@@ -8,6 +8,9 @@ import javax.microedition.lcdui.Image;
 public class Game extends Canvas implements Runnable {
 	private int width;
 	private int height;
+	private int devWidth;
+	private int devHeight;
+	private float ratio;
 	private Graphics graphics;
 	private Image image;
 	private Random random = null;
@@ -70,14 +73,14 @@ public class Game extends Canvas implements Runnable {
 		ghostspeed = new int[maxghosts];
 		dx=new int[4];
 		dy=new int[4];
-		width = getWidth();
-		height = getHeight();
-		image = Image.createImage(width, height);
+		width = 360;
+		height = 312;
+		devWidth = getWidth();
+		devHeight = getHeight();
+		image = Image.createImage(devWidth, devHeight);
 		init();
-		if(width > height)
-			blocksize = height/yblocknum;
-		else
-			blocksize = width/xblocknum;
+		blocksize = 24;
+		ratio = ((float)Math.min(devHeight, devWidth)) / (float)384;
 	}
 
 	public void run() {
@@ -134,12 +137,16 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
+	private int toPixel(float p) {
+		return (int)(p * ratio);
+	}
+	
 	protected void paint(Graphics g) {
 		int x, y;
 		short i = 0;
 
 		if (graphics == null && width > 0 && height > 0) {
-			image = Image.createImage(width, height);
+			image = Image.createImage(devWidth, devHeight);
 			graphics = image.getGraphics();
 		}
 		if(graphics == null || image == null) {
@@ -147,7 +154,7 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		graphics.setColor(255, 255, 255);
-		graphics.fillRect(0, 0, width, height);
+		graphics.fillRect(0, 0, toPixel(width), toPixel(height));
 		// draw the maze
 		for(y = 0; y < blocksize*yblocknum; y += blocksize) {
 			for(x = 0; x < blocksize*xblocknum; x += blocksize) {
@@ -161,20 +168,20 @@ public class Game extends Canvas implements Runnable {
 				 *  8
 				 */
 				if((screendata[i]&1) != 0)
-					graphics.drawLine(x,y,x,y+blocksize-1);
+					graphics.drawLine(toPixel(x),toPixel(y),toPixel(x),toPixel(y+blocksize-1));
 				if((screendata[i]&2) != 0)
-					graphics.drawLine(x,y,x+blocksize-1,y);
+					graphics.drawLine(toPixel(x),toPixel(y),toPixel(x+blocksize-1),toPixel(y));
 				if((screendata[i]&4) != 0)
-					graphics.drawLine(x+blocksize,y,x+blocksize,y+blocksize);
+					graphics.drawLine(toPixel(x+blocksize),toPixel(y),toPixel(x+blocksize),toPixel(y+blocksize));
 				if ((screendata[i]&8) != 0)
-					graphics.drawLine(x,y+blocksize,x+blocksize-1,y+blocksize);
+					graphics.drawLine(toPixel(x),toPixel(y+blocksize),toPixel(x+blocksize-1),toPixel(y+blocksize));
 				if ((screendata[i]&16) != 0) {
 					graphics.setColor(0, 0, 0);
-					graphics.fillRect(x+blocksize/2,y+blocksize/2,1,1);
+					graphics.fillRect(toPixel(x+blocksize/2),toPixel(y+blocksize/2),1,1);
 				}
 				if ((screendata[i]&32) != 0) {
 					graphics.setColor(0, 0, 255);
-					graphics.fillRect(x+1,y+1,blocksize-1,blocksize-1);
+					graphics.fillRect(toPixel(x+1),toPixel(y+1),toPixel(blocksize-1),toPixel(blocksize-1));
 				}
 				i++;
 			}
@@ -186,11 +193,11 @@ public class Game extends Canvas implements Runnable {
 				deathcounter--;
 				if((deathcounter%8)<4) {
 					graphics.setColor(255, 255, 255);
-					graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
+					graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
 				}
 				else if((deathcounter%8)>=4) {
 					graphics.setColor(255, 255, 0);
-					graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
+					graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
 				} if(deathcounter == 0) {
 					pacsleft--;
 					if(pacsleft == 0)
@@ -242,7 +249,7 @@ public class Game extends Canvas implements Runnable {
 				pacmanx=pacmanx+currentspeed*pacmandx;
 				pacmany=pacmany+currentspeed*pacmandy;
 				graphics.setColor(255, 255, 0);
-				graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
+				graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
 				checkMaze();
 			}
 		} else {
@@ -310,7 +317,7 @@ public class Game extends Canvas implements Runnable {
 				ghostx[i]=ghostx[i]+(ghostdx[i]*ghostspeed[i]);
 				ghosty[i]=ghosty[i]+(ghostdy[i]*ghostspeed[i]);
 				graphics.setColor(255, 0, 0);
-				graphics.fillRect(ghostx[i]+1, ghosty[i]+1, blocksize-1, blocksize-1);
+				graphics.fillRect(toPixel(ghostx[i]+1), toPixel(ghosty[i]+1), toPixel(blocksize-1), toPixel(blocksize-1));
 
 				if (pacmanx>(ghostx[i]-(blocksize/2)) && pacmanx<(ghostx[i]+(blocksize/2)) &&
 						pacmany>(ghosty[i]-(blocksize/2)) && pacmany<(ghosty[i]+(blocksize/2)) && started) {
