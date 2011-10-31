@@ -13,9 +13,9 @@ public class Game extends Canvas implements Runnable {
 	Thread thread;
 	Random random = null;
 
-	// statuses
-	boolean ingame = false;
-	boolean paused = false;
+	// status machine
+	boolean started = false;
+	boolean paused = false; // if started, paused or resumed?
 	boolean scared = false;
 	boolean dying = false;
 
@@ -127,7 +127,7 @@ public class Game extends Canvas implements Runnable {
 
 
 	protected void keyPressed(int key) {
-		if(ingame) {
+		if(started) {
 			if(key == Canvas.KEY_NUM4 || key == Canvas.LEFT || key == -3) {
 				reqdx = -1;
 				reqdy = 0;
@@ -145,12 +145,12 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void start() {
-		ingame = true;
+		started = true;
 		GameInit();
 	}
 	
 	public void stop() {
-		ingame = false;
+		started = false;
 		LevelInit();
 	}
 	
@@ -208,7 +208,7 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		// TODO: draw some score
-		if(ingame) {
+		if(started) {
 			// play the game
 			if (dying) {
 				deathcounter--;
@@ -222,7 +222,7 @@ public class Game extends Canvas implements Runnable {
 				} if(deathcounter == 0) {
 					pacsleft--;
 					if(pacsleft == 0)
-						ingame = false;
+						started = false;
 					LevelInit();
 				}
 			} else {
@@ -342,7 +342,7 @@ public class Game extends Canvas implements Runnable {
 				graphics.fillRect(ghostx[i]+1, ghosty[i]+1, blocksize-1, blocksize-1);
 
 				if (pacmanx>(ghostx[i]-(blocksize/2)) && pacmanx<(ghostx[i]+(blocksize/2)) &&
-						pacmany>(ghosty[i]-(blocksize/2)) && pacmany<(ghosty[i]+(blocksize/2)) && ingame) {
+						pacmany>(ghosty[i]-(blocksize/2)) && pacmany<(ghosty[i]+(blocksize/2)) && started) {
 					if (scared) {
 						score+=10;
 						ghostx[i]=7*blocksize;
