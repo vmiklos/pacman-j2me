@@ -7,8 +7,6 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 public class Game extends Canvas {
-	private int width;
-	private int height;
 	private int devWidth;
 	private int devHeight;
 	private float ratio;
@@ -30,13 +28,15 @@ public class Game extends Canvas {
 	private final int validspeeds[] = { 1, 2, 3, 3, 4, 4 };
 	private final int xblocknum = 15;
 	private final int yblocknum = 13;
+	private final int blocksize = 24;
 
+	// generated values
+	private int width;
+	private int height;
+	
 	// defaults
 	private int ghostnum = 6;
 	private int currentspeed = 4;
-
-	// generated values
-	private int blocksize;
 
 	// status variables
 	private int pacsleft, score, deathcounter;
@@ -78,14 +78,13 @@ public class Game extends Canvas {
 		ghostspeed = new int[maxghosts];
 		dx=new int[4];
 		dy=new int[4];
-		width = 360;
-		font = Font.getFont(Font.FONT_STATIC_TEXT);
-		height = 312;
+		width = blocksize * xblocknum;
+		height = blocksize * yblocknum;
 		devWidth = getWidth();
 		devHeight = getHeight();
-		init();
-		blocksize = 24;
+		font = Font.getFont(Font.FONT_STATIC_TEXT);
 		ratio = (float)Math.min(devHeight-font.getHeight(), devWidth) / Math.max(height, width);
+		init();
 	}
 	
 	public boolean isPaused() {
