@@ -83,6 +83,7 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		long  starttime;
 
+		initLevel();
 		while(true) {
 			starttime=System.currentTimeMillis();
 			try {
