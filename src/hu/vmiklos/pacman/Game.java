@@ -7,7 +7,6 @@ import javax.microedition.lcdui.Image;
 
 public class Game extends Canvas implements Runnable
 {
-	//int num = 0;
 	int width;
 	int height;
 	Graphics graphics;
@@ -48,26 +47,24 @@ public class Game extends Canvas implements Runnable
 
 	// the maze
 	final short leveldata[] = { 
-		19,26,26,22, 9,12,19,26,22, 9,12,19,26,26,22,
-		37,11,14,17,26,26,20,15,17,26,26,20,11,14,37,
-		17,26,26,20,11, 6,17,26,20, 3,14,17,26,26,20,
-		21, 3, 6,25,22, 5,21, 7,21, 5,19,28, 3, 6,21,
-		21, 9, 8,14,21,13,21, 5,21,13,21,11, 8,12,21,
-		25,18,26,18,24,18,28, 5,25,18,24,18,26,18,28,
-		 6,21, 7,21, 7,21,11, 8,14,21, 7,21, 7,21,03,
-		19,24,26,24,26,16,26,18,26,16,26,24,26,24,22,
-		21, 3, 2, 2, 6,21,15,21,15,21, 3, 2, 2,06,21,
-		21, 9, 8, 8, 4,17,26, 8,26,20, 1, 8, 8,12,21,
-		17,26,26,22,13,21,11, 2,14,21,13,19,26,26,20,
-		37,11,14,17,26,24,22,13,19,24,26,20,11,14,37,
-		25,26,26,28, 3, 6,25,26,28, 3, 6,25,26,26,28
+			19,26,26,22, 9,12,19,26,22, 9,12,19,26,26,22,
+			37,11,14,17,26,26,20,15,17,26,26,20,11,14,37,
+			17,26,26,20,11, 6,17,26,20, 3,14,17,26,26,20,
+			21, 3, 6,25,22, 5,21, 7,21, 5,19,28, 3, 6,21,
+			21, 9, 8,14,21,13,21, 5,21,13,21,11, 8,12,21,
+			25,18,26,18,24,18,28, 5,25,18,24,18,26,18,28,
+			6,21, 7,21, 7,21,11, 8,14,21, 7,21, 7,21,03,
+			19,24,26,24,26,16,26,18,26,16,26,24,26,24,22,
+			21, 3, 2, 2, 6,21,15,21,15,21, 3, 2, 2,06,21,
+			21, 9, 8, 8, 4,17,26, 8,26,20, 1, 8, 8,12,21,
+			17,26,26,22,13,21,11, 2,14,21,13,19,26,26,20,
+			37,11,14,17,26,24,22,13,19,24,26,20,11,14,37,
+			25,26,26,28, 3, 6,25,26,28, 3, 6,25,26,26,28
 	};
 	short[] screendata;
 
 	public Game()
 	{
-		short i;
-
 		screendata = new short[xblocknum*yblocknum];
 		ghostx = new int[maxghosts];
 		ghostdx = new int[maxghosts];
@@ -139,22 +136,22 @@ public class Game extends Canvas implements Runnable
 	{
 		if(ingame)
 		{
-			if(key == Canvas.KEY_NUM4)
+			if(key == Canvas.KEY_NUM4 || key == -3)
 			{
 				reqdx = -1;
 				reqdy = 0;
 			}
-			else if(key == Canvas.KEY_NUM6)
+			else if(key == Canvas.KEY_NUM6 || key == -4)
 			{
 				reqdx = 1;
 				reqdy = 0;
 			}
-			else if(key == Canvas.KEY_NUM2)
+			else if(key == Canvas.KEY_NUM2 || key == -1)
 			{
 				reqdx = 0;
 				reqdy = -1;
 			}
-			else if(key == Canvas.KEY_NUM8)
+			else if(key == Canvas.KEY_NUM8 || key == -2)
 			{
 				reqdx = 0;
 				reqdy = 1;
@@ -285,9 +282,9 @@ public class Game extends Canvas implements Runnable
 					if (reqdx!=0 || reqdy!=0)
 					{
 						if (!( (reqdx==-1 && reqdy==0 && (ch&1)!=0) ||
-									(reqdx==1 && reqdy==0 && (ch&4)!=0) ||
-									(reqdx==0 && reqdy==-1 && (ch&2)!=0) ||
-									(reqdx==0 && reqdy==1 && (ch&8)!=0)))
+								(reqdx==1 && reqdy==0 && (ch&4)!=0) ||
+								(reqdx==0 && reqdy==-1 && (ch&2)!=0) ||
+								(reqdx==0 && reqdy==1 && (ch&8)!=0)))
 						{
 							pacmandx=reqdx;
 							pacmandy=reqdy;

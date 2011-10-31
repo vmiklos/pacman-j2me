@@ -53,14 +53,9 @@ public class Pacman extends MIDlet implements CommandListener
 		{
 			Item[] levelItem =
 			{
-				new StringItem("", "Guide the yellow Pacman " +
-						"around the maze and eat all the " +
-						"little black dots whilst " +
-						"avoiding those nasty red " +
-						"ghosts! Use the key 5 to start " +
-						"the game, 2, 4, 6 and 8 to move " +
-						"Pacman up, left, right and " +
-						"down, respectively.")
+				new StringItem("", "Guide the yellow Pacman around the maze and eat all the little black dots whilst "+
+						"avoiding those nasty red ghosts! If you like the number buttons, use 2, 4, 6 and 8 to move "+
+						"Pacman up, left, right and down, respectively.")
 			};
 			Form form = new Form("Help", levelItem);
 			form.addCommand(okCmd);
