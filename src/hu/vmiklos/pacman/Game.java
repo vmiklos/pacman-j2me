@@ -148,6 +148,11 @@ public class Game extends Canvas implements Runnable {
 		ingame = true;
 		GameInit();
 	}
+	
+	public void stop() {
+		ingame = false;
+		LevelInit();
+	}
 
 	protected void keyReleased(int key) {
 		if (key == Canvas.KEY_NUM4 || key == Canvas.KEY_NUM6 || key == Canvas.KEY_NUM2 ||  key == Canvas.KEY_NUM8) {

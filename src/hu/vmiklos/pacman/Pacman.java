@@ -15,6 +15,7 @@ public class Pacman extends MIDlet implements CommandListener
 {
 	private Game game;
 	private Command startCmd = new Command("Start", Command.SCREEN, 1);
+	private Command stopCmd = new Command("Stop", Command.SCREEN, 1);
 	private Command helpCmd = new Command("Help", Command.SCREEN, 2);
 	private Command exitCmd = new Command("Exit", Command.SCREEN, 3);
 	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 4);
@@ -25,7 +26,6 @@ public class Pacman extends MIDlet implements CommandListener
 	public Pacman() {
 		game = new Game();
 		addedCommands = new Vector();
-		addCommands(startCmd);
 		game.setCommandListener(this);
 	}
 	
@@ -34,7 +34,7 @@ public class Pacman extends MIDlet implements CommandListener
 		addedCommands.addElement(c);
 	}
 	
-	private void addCommands(Command first) {
+	private void setCommands(Command first) {
 		for (int i = 0; i < addedCommands.size(); i++) {
 			game.removeCommand((Command)addedCommands.elementAt(i));
 		}
@@ -49,8 +49,9 @@ public class Pacman extends MIDlet implements CommandListener
 		Display.getDisplay(this).setCurrent(game);
 		Thread myThread = new Thread(game);
 		myThread.start();
+		setCommands(startCmd);
 	}
-
+	
 	public void pauseApp() {
 	}
 
@@ -75,7 +76,12 @@ public class Pacman extends MIDlet implements CommandListener
 			Display.getDisplay(this).setCurrent(form);
 		} else if ((c == cancelCmd) || (c == okCmd)) {
 			Display.getDisplay(this).setCurrent(game);
-		} else if (c == startCmd)
+		} else if (c == startCmd) {
+			setCommands(stopCmd);
 			game.start();
+		} else if (c == stopCmd) {
+			setCommands(startCmd);
+			game.stop();
+		}
 	}
 }
