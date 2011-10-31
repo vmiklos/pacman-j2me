@@ -15,6 +15,10 @@ public class Pacman extends MIDlet
 		game = new Game();
 		commandHandler = new CommandHandler(this);
 		game.setCommandListener(commandHandler);
+		Display.getDisplay(this).setCurrent(game);
+		Thread myThread = new Thread(game);
+		myThread.start();
+		commandHandler.setCommands(commandHandler.getStartCmd(), null);
 	}
 
 	public Game getGame() {
@@ -22,10 +26,6 @@ public class Pacman extends MIDlet
 	}
 	
 	public void startApp() {
-		Display.getDisplay(this).setCurrent(game);
-		Thread myThread = new Thread(game);
-		myThread.start();
-		commandHandler.setCommands(commandHandler.getStartCmd(), null);
 	}
 	
 	public void pauseApp() {
