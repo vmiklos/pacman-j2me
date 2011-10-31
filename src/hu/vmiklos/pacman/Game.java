@@ -88,8 +88,12 @@ public class Game extends Canvas {
 		ratio = (float)Math.min(devHeight-font.getHeight(), devWidth) / Math.max(height, width);
 	}
 	
-	public boolean getPaused() {
+	public boolean isPaused() {
 		return paused;
+	}
+	
+	public boolean isStarted() {
+		return started;
 	}
 
 	public void start() {

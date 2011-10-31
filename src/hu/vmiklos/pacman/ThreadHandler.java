@@ -14,7 +14,7 @@ public class ThreadHandler implements Runnable {
 		while(true) {
 			starttime=System.currentTimeMillis();
 			try {
-				if (!game.getPaused())
+				if (!game.isPaused())
 					game.repaint();
 				// 25fps -> wait at least 40ms if repaint() was faster
 				starttime += 40;
