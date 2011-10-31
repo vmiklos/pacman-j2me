@@ -2,6 +2,7 @@ package hu.vmiklos.pacman;
 
 import java.util.Random;
 import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
@@ -37,7 +38,6 @@ public class Game extends Canvas implements Runnable {
 	// generated values
 	private int blocksize;
 
-
 	// status variables
 	private int pacsleft, score, deathcounter;
 	private int scaredcount, scaredtime;
@@ -63,6 +63,7 @@ public class Game extends Canvas implements Runnable {
 			25,26,26,28, 3, 6,25,26,28, 3, 6,25,26,26,28
 	};
 	private short[] screendata;
+	private Font font;
 
 	public Game() {
 		screendata = new short[xblocknum*yblocknum];
@@ -74,13 +75,13 @@ public class Game extends Canvas implements Runnable {
 		dx=new int[4];
 		dy=new int[4];
 		width = 360;
+		font = Font.getFont(Font.FONT_STATIC_TEXT);
 		height = 312;
 		devWidth = getWidth();
 		devHeight = getHeight();
-		image = Image.createImage(devWidth, devHeight);
 		init();
 		blocksize = 24;
-		ratio = ((float)Math.min(devHeight, devWidth)) / (float)384;
+		ratio = ((float)Math.min(devHeight-font.getHeight(), devWidth)) / ((float)Math.max(height, width));
 	}
 
 	public void run() {
@@ -154,7 +155,7 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		graphics.setColor(255, 255, 255);
-		graphics.fillRect(0, 0, toPixel(width), toPixel(height));
+		graphics.fillRect(0, 0, devWidth, devHeight);
 		// draw the maze
 		for(y = 0; y < blocksize*yblocknum; y += blocksize) {
 			for(x = 0; x < blocksize*xblocknum; x += blocksize) {
@@ -332,6 +333,9 @@ public class Game extends Canvas implements Runnable {
 				}
 			}
 		}
+		graphics.setColor(0, 0, 0);
+		graphics.drawString("Score: " + score, 0, toPixel(height)+((devHeight-toPixel(height)-font.getHeight())/2),
+				Graphics.TOP | Graphics.LEFT);
 		g.drawImage(image, 0, 0, 0);
 	}
 
