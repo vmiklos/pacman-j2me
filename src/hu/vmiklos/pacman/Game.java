@@ -15,6 +15,7 @@ public class Game extends Canvas implements Runnable {
 
 	// statuses
 	boolean ingame = false;
+	boolean paused = false;
 	boolean scared = false;
 	boolean dying = false;
 
@@ -140,8 +141,7 @@ public class Game extends Canvas implements Runnable {
 				reqdx = 0;
 				reqdy = 1;
 			}
-		} else if(key == Canvas.KEY_NUM5 || key == Canvas.FIRE || key == -5)
-			start();
+		}
 	}
 	
 	public void start() {
@@ -153,12 +153,13 @@ public class Game extends Canvas implements Runnable {
 		ingame = false;
 		LevelInit();
 	}
-
-	protected void keyReleased(int key) {
-		if (key == Canvas.KEY_NUM4 || key == Canvas.KEY_NUM6 || key == Canvas.KEY_NUM2 ||  key == Canvas.KEY_NUM8) {
-			reqdx = 0;
-			reqdy = 0;
-		}
+	
+	public void pause() {
+		paused = true;
+	}
+	
+	public void resume() {
+		paused = false;
 	}
 
 	public void paint(Graphics g) {
@@ -406,7 +407,9 @@ public class Game extends Canvas implements Runnable {
 		while(true) {
 			starttime=System.currentTimeMillis();
 			try {
-				repaint();
+				if (!paused)
+					repaint();
+				// 25fps -> wait at least 40ms if repaint() was faster
 				starttime += 40;
 				Thread.sleep(Math.max(0, starttime-System.currentTimeMillis()));
 			} catch(java.lang.InterruptedException ie) {
