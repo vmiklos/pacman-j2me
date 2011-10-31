@@ -11,11 +11,13 @@ import javax.microedition.lcdui.Form;
 public class CommandHandler implements CommandListener {
 
 	private Pacman pacman;
-	private Command startCmd = new Command("Start", Command.SCREEN, 1);
-	private Command stopCmd = new Command("Stop", Command.SCREEN, 1);
-	private Command helpCmd = new Command("Help", Command.SCREEN, 2);
+	private Command pauseCmd = new Command("Pause", Command.SCREEN, 1);
+	private Command resumeCmd = new Command("Resume", Command.SCREEN, 1);
+	private Command startCmd = new Command("Start", Command.SCREEN, 2);
+	private Command stopCmd = new Command("Stop", Command.SCREEN, 2);
 	private Command exitCmd = new Command("Exit", Command.SCREEN, 3);
-	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 4);
+	private Command helpCmd = new Command("Help", Command.SCREEN, 4);
+	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 5);
 	private Command okCmd = new Command("OK", Command.SCREEN, 1);
 	private Vector addedCommands;
 	
@@ -37,12 +39,14 @@ public class CommandHandler implements CommandListener {
 		addedCommands.addElement(c);
 	}
 	
-	public void setCommands(Command first) {
+	public void setCommands(Command first, Command second) {
 		for (int i = 0; i < addedCommands.size(); i++) {
 			pacman.getGame().removeCommand((Command)addedCommands.elementAt(i));
 		}
 		addedCommands.removeAllElements();
 		addCommand(first);
+		if (second != null)
+			addCommand(second);
 		addCommand(helpCmd);
 		addCommand(exitCmd);
 		addCommand(cancelCmd);
@@ -56,11 +60,17 @@ public class CommandHandler implements CommandListener {
 		} else if ((c == cancelCmd) || (c == okCmd)) {
 			Display.getDisplay(pacman).setCurrent(pacman.getGame());
 		} else if (c == startCmd) {
-			setCommands(stopCmd);
+			setCommands(pauseCmd, stopCmd);
 			pacman.getGame().start();
 		} else if (c == stopCmd) {
-			setCommands(startCmd);
+			setCommands(startCmd, null);
 			pacman.getGame().stop();
+		} else if (c == pauseCmd) {
+			setCommands(resumeCmd, stopCmd);
+			pacman.getGame().pause();
+		} else if (c == resumeCmd) {
+			setCommands(pauseCmd, stopCmd);
+			pacman.getGame().resume();
 		}
 	}
 	

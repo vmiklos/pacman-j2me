@@ -25,7 +25,7 @@ public class Pacman extends MIDlet
 		Display.getDisplay(this).setCurrent(game);
 		Thread myThread = new Thread(game);
 		myThread.start();
-		commandHandler.setCommands(commandHandler.getStartCmd());
+		commandHandler.setCommands(commandHandler.getStartCmd(), null);
 	}
 	
 	public void pauseApp() {
