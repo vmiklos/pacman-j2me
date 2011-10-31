@@ -64,8 +64,10 @@ public class Game extends Canvas implements Runnable {
 	};
 	private short[] screendata;
 	private Font font;
+	private Pacman pacman;
 
-	public Game() {
+	public Game(Pacman pacman) {
+		this.pacman = pacman;
 		screendata = new short[xblocknum*yblocknum];
 		ghostx = new int[maxghosts];
 		ghostdx = new int[maxghosts];
@@ -201,8 +203,10 @@ public class Game extends Canvas implements Runnable {
 					graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
 				} if(deathcounter == 0) {
 					pacsleft--;
-					if(pacsleft == 0)
+					if(pacsleft == 0) {
 						started = false;
+						pacman.getCommandHandler().stop();
+					}
 					initLevel();
 				}
 			} else {

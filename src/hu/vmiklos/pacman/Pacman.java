@@ -12,7 +12,7 @@ public class Pacman extends MIDlet
 	private CommandHandler commandHandler;
 	
 	public Pacman() {
-		game = new Game();
+		game = new Game(this);
 		commandHandler = new CommandHandler(this);
 		game.setCommandListener(commandHandler);
 		Display.getDisplay(this).setCurrent(game);
@@ -22,6 +22,10 @@ public class Pacman extends MIDlet
 
 	public Game getGame() {
 		return game;
+	}
+	
+	public CommandHandler getCommandHandler() {
+		return commandHandler;
 	}
 	
 	public void startApp() {
