@@ -73,7 +73,7 @@ public class Game extends Canvas implements Runnable {
 		width = getWidth();
 		height = getHeight();
 		image = Image.createImage(width, height);
-		GameInit();
+		init();
 		if(width > height)
 			blocksize = height/yblocknum;
 		else
@@ -99,12 +99,12 @@ public class Game extends Canvas implements Runnable {
 
 	public void start() {
 		started = true;
-		GameInit();
+		init();
 	}
 	
 	public void stop() {
 		started = false;
-		LevelInit();
+		initLevel();
 	}
 	
 	public void pause() {
@@ -113,49 +113,6 @@ public class Game extends Canvas implements Runnable {
 	
 	public void resume() {
 		paused = false;
-	}
-
-	// starts a demo or a game
-	private void GameInit() {
-		pacsleft = 3;
-		score = 0;
-		scaredtime = 120;
-		LevelInit();
-		ghostnum = 6;
-		currentspeed = 4;
-		DrawMaze();
-	}
-
-	// resets the state of the level (after a death, etc)
-	private void LevelInit() {
-		short i;
-		int dx = 1;
-
-		for (i = 0; i < ghostnum; i++) {
-			ghostx[i] = 7 * blocksize;
-			ghosty[i] = 6 * blocksize;
-			ghostdx[i] = dx;
-			ghostdy[i] = 0;
-			dx = - dx;
-			ghostspeed[i] = validspeeds[currentspeed - 3];
-		}
-		pacmanx = 7 * blocksize;
-		pacmany = 9 * blocksize;
-		pacmandx = 0;
-		pacmandy = 0;
-		reqdx = 0;
-		reqdy = 0;
-		dying = false;
-		scared = false;
-	}
-
-	// draws the maze from scratch (after a death, after a completed level)
-	private void DrawMaze() {
-		int i;
-
-		for (i = 0; i<xblocknum*yblocknum; i++) {
-			screendata[i]=leveldata[i];
-		}
 	}
 
 	protected void keyPressed(int key) {
@@ -237,10 +194,10 @@ public class Game extends Canvas implements Runnable {
 					pacsleft--;
 					if(pacsleft == 0)
 						started = false;
-					LevelInit();
+					initLevel();
 				}
 			} else {
-				UpdateWalls();
+				updateWalls();
 				// if we are not dying, we can move pacman
 				int     pos;
 				short   ch;
@@ -285,11 +242,11 @@ public class Game extends Canvas implements Runnable {
 				pacmany=pacmany+currentspeed*pacmandy;
 				graphics.setColor(255, 255, 0);
 				graphics.fillRect(pacmanx+1, pacmany+1, blocksize-1, blocksize-1);
-				CheckMaze();
+				checkMaze();
 			}
 		} else {
 			// demo
-			UpdateWalls();
+			updateWalls();
 		}
 		if(!dying) {
 			// if we're not dying, we should move the ghosts (demo or game)
@@ -370,23 +327,51 @@ public class Game extends Canvas implements Runnable {
 		g.drawImage(image, 0, 0, 0);
 	}
 
-	// lock / unlock the ghosts
-	private void UpdateWalls() {
-		scaredcount--;
-		if (scaredcount<=0)
-			scared=false;
+	// starts a demo or a game
+	private void init() {
+		pacsleft = 3;
+		score = 0;
+		scaredtime = 120;
+		initLevel();
+		ghostnum = 6;
+		currentspeed = 4;
+		drawMaze();
+	}
 
-		if (scared) {
-			screendata[6*xblocknum+6]=11;
-			screendata[6*xblocknum+8]=14;
-		} else {
-			screendata[6*xblocknum+6]=10;
-			screendata[6*xblocknum+8]=10;
+	// resets the state of the level (after a death, etc)
+	private void initLevel() {
+		short i;
+		int dx = 1;
+
+		for (i = 0; i < ghostnum; i++) {
+			ghostx[i] = 7 * blocksize;
+			ghosty[i] = 6 * blocksize;
+			ghostdx[i] = dx;
+			ghostdy[i] = 0;
+			dx = - dx;
+			ghostspeed[i] = validspeeds[currentspeed - 3];
+		}
+		pacmanx = 7 * blocksize;
+		pacmany = 9 * blocksize;
+		pacmandx = 0;
+		pacmandy = 0;
+		reqdx = 0;
+		reqdy = 0;
+		dying = false;
+		scared = false;
+	}
+
+	// draws the maze from scratch (after a death, after a completed level)
+	private void drawMaze() {
+		int i;
+
+		for (i = 0; i<xblocknum*yblocknum; i++) {
+			screendata[i]=leveldata[i];
 		}
 	}
 
 	// checks if this is the end of the game or not
-	private void CheckMaze() {
+	private void checkMaze() {
 		short i=0;
 		boolean finished=true;
 
@@ -409,8 +394,23 @@ public class Game extends Canvas implements Runnable {
 			scaredtime=scaredtime-20;
 			if (scaredtime<minscaredtime)
 				scaredtime=minscaredtime;
-			LevelInit();
-			DrawMaze();
+			initLevel();
+			drawMaze();
+		}
+	}
+
+	// lock / unlock the ghosts
+	private void updateWalls() {
+		scaredcount--;
+		if (scaredcount<=0)
+			scared=false;
+
+		if (scared) {
+			screendata[6*xblocknum+6]=11;
+			screendata[6*xblocknum+8]=14;
+		} else {
+			screendata[6*xblocknum+6]=10;
+			screendata[6*xblocknum+8]=10;
 		}
 	}
 }
