@@ -31,8 +31,8 @@ public class Game extends Canvas {
 	private final int blocksize = 24;
 
 	// generated values
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
 	// defaults
 	private int ghostnum = 6;
@@ -41,9 +41,10 @@ public class Game extends Canvas {
 	// status variables
 	private int pacsleft, score, deathcounter;
 	private int scaredcount, scaredtime;
+	private int[] ghostspeed;
 
 	// positions
-	private int[] ghostx, ghosty, ghostdx, ghostdy, ghostspeed;
+	private int[] ghostx, ghosty, ghostdx, ghostdy;
 	private int pacmanx, pacmany, pacmandx, pacmandy, reqdx, reqdy;
 
 	// the maze
