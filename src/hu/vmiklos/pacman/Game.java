@@ -6,47 +6,44 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 public class Game extends Canvas implements Runnable {
-	int width;
-	int height;
-	Graphics graphics;
-	Image image;
-	Thread thread;
-	Random random = null;
+	private int width;
+	private int height;
+	private Graphics graphics;
+	private Image image;
+	private Random random = null;
 
 	// status machine
-	boolean started = false;
-	boolean paused = false; // if started, paused or resumed?
-	boolean scared = false;
-	boolean dying = false;
+	private boolean started = false;
+	private boolean paused = false; // if started, paused or resumed?
+	private boolean scared = false;
+	private boolean dying = false;
 
 	// rules
-	final int maxghosts = 12;
-	final int minscaredtime = 20;
-	final int maxspeed = 6;
-	final int validspeeds[] = { 1, 2, 3, 3, 4, 4 };
+	private final int maxghosts = 12;
+	private final int minscaredtime = 20;
+	private final int maxspeed = 6;
+	private final int validspeeds[] = { 1, 2, 3, 3, 4, 4 };
+	private final int xblocknum = 15;
+	private final int yblocknum = 13;
 
 	// defaults
-	int ghostnum = 6;
-	final int xblocknum = 15;
-	final int yblocknum = 13;
-	int currentspeed = 4;
+	private int ghostnum = 6;
+	private int currentspeed = 4;
 
 	// generated values
-	int blocksize;
-	final int xscrsize = xblocknum * blocksize;
-	final int yscrsize = yblocknum * blocksize;
+	private int blocksize;
 
 
 	// status variables
-	int pacsleft, score, deathcounter;
-	int scaredcount, scaredtime;
+	private int pacsleft, score, deathcounter;
+	private int scaredcount, scaredtime;
 
 	// positions
-	int[] dx, dy, ghostx, ghosty, ghostdx, ghostdy, ghostspeed;
-	int pacmanx, pacmany, pacmandx, pacmandy, reqdx, reqdy;
+	private int[] dx, dy, ghostx, ghosty, ghostdx, ghostdy, ghostspeed;
+	private int pacmanx, pacmany, pacmandx, pacmandy, reqdx, reqdy;
 
 	// the maze
-	final short leveldata[] = { 
+	private final short leveldata[] = { 
 			19,26,26,22, 9,12,19,26,22, 9,12,19,26,26,22,
 			37,11,14,17,26,26,20,15,17,26,26,20,11,14,37,
 			17,26,26,20,11, 6,17,26,20, 3,14,17,26,26,20,
@@ -61,7 +58,7 @@ public class Game extends Canvas implements Runnable {
 			37,11,14,17,26,24,22,13,19,24,26,20,11,14,37,
 			25,26,26,28, 3, 6,25,26,28, 3, 6,25,26,26,28
 	};
-	short[] screendata;
+	private short[] screendata;
 
 	public Game() {
 		screendata = new short[xblocknum*yblocknum];
@@ -83,7 +80,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	// starts a demo or a game
-	public void GameInit() {
+	private void GameInit() {
 		pacsleft = 3;
 		score = 0;
 		scaredtime = 120;
@@ -94,7 +91,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	// resets the state of the level (after a death, etc)
-	public void LevelInit() {
+	private void LevelInit() {
 		short i;
 		int dx = 1;
 
@@ -117,14 +114,13 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	// draws the maze from scratch (after a death, after a completed level)
-	public void DrawMaze() {
+	private void DrawMaze() {
 		int i;
 
 		for (i = 0; i<xblocknum*yblocknum; i++) {
 			screendata[i]=leveldata[i];
 		}
 	}
-
 
 	protected void keyPressed(int key) {
 		if(started) {
@@ -162,7 +158,7 @@ public class Game extends Canvas implements Runnable {
 		paused = false;
 	}
 
-	public void paint(Graphics g) {
+	protected void paint(Graphics g) {
 		int x, y;
 		short i = 0;
 
@@ -358,7 +354,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	// lock / unlock the ghosts
-	public void UpdateWalls() {
+	private void UpdateWalls() {
 		scaredcount--;
 		if (scaredcount<=0)
 			scared=false;
@@ -373,7 +369,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	// checks if this is the end of the game or not
-	public void CheckMaze() {
+	private void CheckMaze() {
 		short i=0;
 		boolean finished=true;
 
