@@ -21,34 +21,34 @@ public class Game extends Canvas {
 	private boolean dying = false;
 
 	// rules
-	private final int maxghosts = 12;
-	private final int minscaredtime = 20;
-	private final int maxspeed = 6;
+	private final int maxGhosts = 12;
+	private final int minScaredTime = 20;
+	private final int maxSpeed = 6;
 	// valid speeds of ghosts
-	private final int validspeeds[] = { 1, 2, 3, 3, 4, 4 };
-	private final int xblocknum = 15;
-	private final int yblocknum = 13;
-	private final int blocksize = 24;
+	private final int validSpeeds[] = { 1, 2, 3, 3, 4, 4 };
+	private final int xBlocknum = 15;
+	private final int yBlocknum = 13;
+	private final int blockSize = 24;
 
 	// generated values
 	private final int width;
 	private final int height;
 	
 	// defaults
-	private int ghostnum = 6;
-	private int currentspeed = 4;
+	private int ghostNum = 6;
+	private int currentSpeed = 4;
 
 	// status variables
-	private int pacsleft, score, deathcounter;
-	private int scaredcount, scaredtime;
-	private int[] ghostspeed;
+	private int pacsLeft, score, deathCounter;
+	private int scaredCount, scaredTime;
+	private int[] ghostSpeed;
 
 	// positions
-	private int[] ghostx, ghosty, ghostdx, ghostdy;
-	private int pacmanx, pacmany, pacmandx, pacmandy, reqdx, reqdy;
+	private int[] ghostX, ghostY, ghostDx, ghostDy;
+	private int pacmanX, pacmanY, pacmandX, pacmandY, reqDx, reqDy;
 
 	// the maze
-	private final short leveldata[] = { 
+	private final short levelData[] = { 
 			19,26,26,22, 9,12,19,26,22, 9,12,19,26,26,22,
 			37,11,14,17,26,26,20,15,17,26,26,20,11,14,37,
 			17,26,26,20,11, 6,17,26,20, 3,14,17,26,26,20,
@@ -63,7 +63,7 @@ public class Game extends Canvas {
 			37,11,14,17,26,24,22,13,19,24,26,20,11,14,37,
 			25,26,26,28, 3, 6,25,26,28, 3, 6,25,26,26,28
 	};
-	private short[] screendata;
+	private short[] screenData;
 	private Font font;
 	private Pacman pacman;
 	private String hint;
@@ -71,14 +71,14 @@ public class Game extends Canvas {
 	public Game(Pacman pacman) {
 		hint = "App started!";
 		this.pacman = pacman;
-		screendata = new short[xblocknum*yblocknum];
-		ghostx = new int[maxghosts];
-		ghostdx = new int[maxghosts];
-		ghosty = new int[maxghosts];
-		ghostdy = new int[maxghosts];
-		ghostspeed = new int[maxghosts];
-		width = blocksize * xblocknum;
-		height = blocksize * yblocknum;
+		screenData = new short[xBlocknum*yBlocknum];
+		ghostX = new int[maxGhosts];
+		ghostDx = new int[maxGhosts];
+		ghostY = new int[maxGhosts];
+		ghostDy = new int[maxGhosts];
+		ghostSpeed = new int[maxGhosts];
+		width = blockSize * xBlocknum;
+		height = blockSize * yBlocknum;
 		devWidth = getWidth();
 		devHeight = getHeight();
 		font = Font.getFont(Font.FONT_STATIC_TEXT);
@@ -122,20 +122,20 @@ public class Game extends Canvas {
 		short i;
 		int dx = 1;
 
-		for (i = 0; i < ghostnum; i++) {
-			ghostx[i] = 7 * blocksize;
-			ghosty[i] = 6 * blocksize;
-			ghostdx[i] = dx;
-			ghostdy[i] = 0;
+		for (i = 0; i < ghostNum; i++) {
+			ghostX[i] = 7 * blockSize;
+			ghostY[i] = 6 * blockSize;
+			ghostDx[i] = dx;
+			ghostDy[i] = 0;
 			dx = - dx;
-			ghostspeed[i] = validspeeds[currentspeed - 3];
+			ghostSpeed[i] = validSpeeds[currentSpeed - 3];
 		}
-		pacmanx = 7 * blocksize;
-		pacmany = 9 * blocksize;
-		pacmandx = 0;
-		pacmandy = 0;
-		reqdx = 0;
-		reqdy = 0;
+		pacmanX = 7 * blockSize;
+		pacmanY = 9 * blockSize;
+		pacmandX = 0;
+		pacmandY = 0;
+		reqDx = 0;
+		reqDy = 0;
 		dying = false;
 		scared = false;
 	}
@@ -143,17 +143,17 @@ public class Game extends Canvas {
 	protected void keyPressed(int key) {
 		if(started) {
 			if(key == Canvas.KEY_NUM4 || key == Canvas.LEFT || key == -3) {
-				reqdx = -1;
-				reqdy = 0;
+				reqDx = -1;
+				reqDy = 0;
 			} else if(key == Canvas.KEY_NUM6 || key == Canvas.RIGHT || key == -4) {
-				reqdx = 1;
-				reqdy = 0;
+				reqDx = 1;
+				reqDy = 0;
 			} else if(key == Canvas.KEY_NUM2 || key == Canvas.UP || key == -1) {
-				reqdx = 0;
-				reqdy = -1;
+				reqDx = 0;
+				reqDy = -1;
 			} else if(key == Canvas.KEY_NUM8 || key == Canvas.DOWN || key == -2) {
-				reqdx = 0;
-				reqdy = 1;
+				reqDx = 0;
+				reqDy = 1;
 			}
 		}
 	}
@@ -173,8 +173,8 @@ public class Game extends Canvas {
 		graphics.setColor(255, 255, 255);
 		graphics.fillRect(0, 0, devWidth, devHeight);
 		// draw the maze
-		for(y = 0; y < blocksize*yblocknum; y += blocksize) {
-			for(x = 0; x < blocksize*xblocknum; x += blocksize) {
+		for(y = 0; y < blockSize*yBlocknum; y += blockSize) {
+			for(x = 0; x < blockSize*xBlocknum; x += blockSize) {
 				// borders
 				if(!scared)
 					graphics.setColor(0, 0, 0);
@@ -184,21 +184,21 @@ public class Game extends Canvas {
 				 * 1 4
 				 *  8
 				 */
-				if((screendata[i]&1) != 0)
-					graphics.drawLine(toPixel(x),toPixel(y),toPixel(x),toPixel(y+blocksize-1));
-				if((screendata[i]&2) != 0)
-					graphics.drawLine(toPixel(x),toPixel(y),toPixel(x+blocksize-1),toPixel(y));
-				if((screendata[i]&4) != 0)
-					graphics.drawLine(toPixel(x+blocksize),toPixel(y),toPixel(x+blocksize),toPixel(y+blocksize));
-				if ((screendata[i]&8) != 0)
-					graphics.drawLine(toPixel(x),toPixel(y+blocksize),toPixel(x+blocksize-1),toPixel(y+blocksize));
-				if ((screendata[i]&16) != 0) {
+				if((screenData[i]&1) != 0)
+					graphics.drawLine(toPixel(x),toPixel(y),toPixel(x),toPixel(y+blockSize-1));
+				if((screenData[i]&2) != 0)
+					graphics.drawLine(toPixel(x),toPixel(y),toPixel(x+blockSize-1),toPixel(y));
+				if((screenData[i]&4) != 0)
+					graphics.drawLine(toPixel(x+blockSize),toPixel(y),toPixel(x+blockSize),toPixel(y+blockSize));
+				if ((screenData[i]&8) != 0)
+					graphics.drawLine(toPixel(x),toPixel(y+blockSize),toPixel(x+blockSize-1),toPixel(y+blockSize));
+				if ((screenData[i]&16) != 0) {
 					graphics.setColor(0, 0, 0);
-					graphics.fillRect(toPixel(x+blocksize/2),toPixel(y+blocksize/2),1,1);
+					graphics.fillRect(toPixel(x+blockSize/2),toPixel(y+blockSize/2),1,1);
 				}
-				if ((screendata[i]&32) != 0) {
+				if ((screenData[i]&32) != 0) {
 					graphics.setColor(0, 0, 255);
-					graphics.fillRect(toPixel(x+1),toPixel(y+1),toPixel(blocksize-1),toPixel(blocksize-1));
+					graphics.fillRect(toPixel(x+1),toPixel(y+1),toPixel(blockSize-1),toPixel(blockSize-1));
 				}
 				i++;
 			}
@@ -206,17 +206,17 @@ public class Game extends Canvas {
 		if(started) {
 			// play the game
 			if (dying) {
-				deathcounter--;
-				if((deathcounter%8)<4) {
+				deathCounter--;
+				if((deathCounter%8)<4) {
 					graphics.setColor(255, 255, 255);
-					graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
+					graphics.fillRect(toPixel(pacmanX+1), toPixel(pacmanY+1), toPixel(blockSize-1), toPixel(blockSize-1));
 				}
-				else if((deathcounter%8)>=4) {
+				else if((deathCounter%8)>=4) {
 					graphics.setColor(255, 255, 0);
-					graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
-				} if(deathcounter == 0) {
-					pacsleft--;
-					if(pacsleft == 0) {
+					graphics.fillRect(toPixel(pacmanX+1), toPixel(pacmanY+1), toPixel(blockSize-1), toPixel(blockSize-1));
+				} if(deathCounter == 0) {
+					pacsLeft--;
+					if(pacsLeft == 0) {
 						started = false;
 						hint = "Game over!";
 						pacman.getCommandHandler().stop();
@@ -229,46 +229,46 @@ public class Game extends Canvas {
 				int     pos;
 				short   ch;
 
-				if (reqdx==-pacmandx && reqdy==-pacmandy) {
-					pacmandx=reqdx;
-					pacmandy=reqdy;
-				} if (pacmanx%blocksize==0 && pacmany%blocksize==0) {
-					pos=pacmanx/blocksize+xblocknum*(int)(pacmany/blocksize);
-					ch=screendata[pos];
+				if (reqDx==-pacmandX && reqDy==-pacmandY) {
+					pacmandX=reqDx;
+					pacmandY=reqDy;
+				} if (pacmanX%blockSize==0 && pacmanY%blockSize==0) {
+					pos=pacmanX/blockSize+xBlocknum*(int)(pacmanY/blockSize);
+					ch=screenData[pos];
 					if ((ch&16)!=0) {
-						screendata[pos]=(short)(ch&15);
+						screenData[pos]=(short)(ch&15);
 						score++;
 					} 
 					if ((ch&32)!=0) {
 						scared=true;
-						scaredcount=scaredtime;
-						screendata[pos]=(short)(ch&15);
+						scaredCount=scaredTime;
+						screenData[pos]=(short)(ch&15);
 						score+=5;
 					}
 
-					if (reqdx!=0 || reqdy!=0) {
-						if (!( (reqdx==-1 && reqdy==0 && (ch&1)!=0) ||
-								(reqdx==1 && reqdy==0 && (ch&4)!=0) ||
-								(reqdx==0 && reqdy==-1 && (ch&2)!=0) ||
-								(reqdx==0 && reqdy==1 && (ch&8)!=0))) {
-							pacmandx=reqdx;
-							pacmandy=reqdy;
+					if (reqDx!=0 || reqDy!=0) {
+						if (!( (reqDx==-1 && reqDy==0 && (ch&1)!=0) ||
+								(reqDx==1 && reqDy==0 && (ch&4)!=0) ||
+								(reqDx==0 && reqDy==-1 && (ch&2)!=0) ||
+								(reqDx==0 && reqDy==1 && (ch&8)!=0))) {
+							pacmandX=reqDx;
+							pacmandY=reqDy;
 						}
 					}
 
 					// check if we should stop pacman
-					if ( (pacmandx==-1 && pacmandy==0 && (ch&1)!=0) ||
-							(pacmandx==1 && pacmandy==0 && (ch&4)!=0) ||
-							(pacmandx==0 && pacmandy==-1 && (ch&2)!=0) ||
-							(pacmandx==0 && pacmandy==1 && (ch&8)!=0)) {
-						pacmandx=0;
-						pacmandy=0;
+					if ( (pacmandX==-1 && pacmandY==0 && (ch&1)!=0) ||
+							(pacmandX==1 && pacmandY==0 && (ch&4)!=0) ||
+							(pacmandX==0 && pacmandY==-1 && (ch&2)!=0) ||
+							(pacmandX==0 && pacmandY==1 && (ch&8)!=0)) {
+						pacmandX=0;
+						pacmandY=0;
 					}
 				}
-				pacmanx=pacmanx+currentspeed*pacmandx;
-				pacmany=pacmany+currentspeed*pacmandy;
+				pacmanX=pacmanX+currentSpeed*pacmandX;
+				pacmanY=pacmanY+currentSpeed*pacmandY;
 				graphics.setColor(255, 255, 0);
-				graphics.fillRect(toPixel(pacmanx+1), toPixel(pacmany+1), toPixel(blocksize-1), toPixel(blocksize-1));
+				graphics.fillRect(toPixel(pacmanX+1), toPixel(pacmanY+1), toPixel(blockSize-1), toPixel(blockSize-1));
 				checkMaze();
 			}
 		} else {
@@ -281,9 +281,9 @@ public class Game extends Canvas {
 			int count;
 			int j;
 
-			for (i=0; i<ghostnum; i++) {
-				if (ghostx[i]%blocksize==0 && ghosty[i]%blocksize==0) {
-					pos=ghostx[i]/blocksize+xblocknum*(int)(ghosty[i]/blocksize);
+			for (i=0; i<ghostNum; i++) {
+				if (ghostX[i]%blockSize==0 && ghostY[i]%blockSize==0) {
+					pos=ghostX[i]/blockSize+xBlocknum*(int)(ghostY[i]/blockSize);
 					count=0;
 					int[] dx = new int[4], dy = new int[4];
 					// no direction by default
@@ -291,33 +291,33 @@ public class Game extends Canvas {
 						dx[j]=0;
 						dy[j]=0;
 					}
-					if ((screendata[pos]&1)==0 && ghostdx[i]!=1) {
+					if ((screenData[pos]&1)==0 && ghostDx[i]!=1) {
 						dx[count]=-1;
 						dy[count]=0;
 						count++;
 					}
-					if ((screendata[pos]&2)==0 && ghostdy[i]!=1) {
+					if ((screenData[pos]&2)==0 && ghostDy[i]!=1) {
 						dx[count]=0;
 						dy[count]=-1;
 						count++;
 					}
-					if ((screendata[pos]&4)==0 && ghostdx[i]!=-1) {
+					if ((screenData[pos]&4)==0 && ghostDx[i]!=-1) {
 						dx[count]=1;
 						dy[count]=0;
 						count++;
 					}
-					if ((screendata[pos]&8)==0 && ghostdy[i]!=-1) {
+					if ((screenData[pos]&8)==0 && ghostDy[i]!=-1) {
 						dx[count]=0;
 						dy[count]=1;
 						count++;
 					}
 					if (count==0) {
-						if ((screendata[pos]&15)==15) {
-							ghostdx[i]=0;
-							ghostdy[i]=0;
+						if ((screenData[pos]&15)==15) {
+							ghostDx[i]=0;
+							ghostDy[i]=0;
 						} else {
-							ghostdx[i]=-ghostdx[i];
-							ghostdy[i]=-ghostdy[i];
+							ghostDx[i]=-ghostDx[i];
+							ghostDy[i]=-ghostDy[i];
 						}
 					} else {
 						if(random == null)
@@ -330,24 +330,24 @@ public class Game extends Canvas {
 							else
 								break;
 						}
-						ghostdx[i]=dx[count]; // random: 0-3
-						ghostdy[i]=dy[count];
+						ghostDx[i]=dx[count]; // random: 0-3
+						ghostDy[i]=dy[count];
 					}
 				}
-				ghostx[i]=ghostx[i]+(ghostdx[i]*ghostspeed[i]);
-				ghosty[i]=ghosty[i]+(ghostdy[i]*ghostspeed[i]);
+				ghostX[i]=ghostX[i]+(ghostDx[i]*ghostSpeed[i]);
+				ghostY[i]=ghostY[i]+(ghostDy[i]*ghostSpeed[i]);
 				graphics.setColor(255, 0, 0);
-				graphics.fillRect(toPixel(ghostx[i]+1), toPixel(ghosty[i]+1), toPixel(blocksize-1), toPixel(blocksize-1));
+				graphics.fillRect(toPixel(ghostX[i]+1), toPixel(ghostY[i]+1), toPixel(blockSize-1), toPixel(blockSize-1));
 
-				if (pacmanx>(ghostx[i]-(blocksize/2)) && pacmanx<(ghostx[i]+(blocksize/2)) &&
-						pacmany>(ghosty[i]-(blocksize/2)) && pacmany<(ghosty[i]+(blocksize/2)) && started) {
+				if (pacmanX>(ghostX[i]-(blockSize/2)) && pacmanX<(ghostX[i]+(blockSize/2)) &&
+						pacmanY>(ghostY[i]-(blockSize/2)) && pacmanY<(ghostY[i]+(blockSize/2)) && started) {
 					if (scared) {
 						score+=10;
-						ghostx[i]=7*blocksize;
-						ghosty[i]=6*blocksize;
+						ghostX[i]=7*blockSize;
+						ghostY[i]=6*blockSize;
 					} else {
 						dying=true;
-						deathcounter=64;
+						deathCounter=64;
 					}
 				}
 			}
@@ -370,12 +370,12 @@ public class Game extends Canvas {
 
 	// starts a demo or a game
 	private void init() {
-		pacsleft = 3;
+		pacsLeft = 3;
 		score = 0;
-		scaredtime = 120;
+		scaredTime = 120;
 		initLevel();
-		ghostnum = 6;
-		currentspeed = 4;
+		ghostNum = 6;
+		currentSpeed = 4;
 		drawMaze();
 	}
 
@@ -383,8 +383,8 @@ public class Game extends Canvas {
 	private void drawMaze() {
 		int i;
 
-		for (i = 0; i<xblocknum*yblocknum; i++) {
-			screendata[i]=leveldata[i];
+		for (i = 0; i<xBlocknum*yBlocknum; i++) {
+			screenData[i]=levelData[i];
 		}
 	}
 
@@ -393,8 +393,8 @@ public class Game extends Canvas {
 		short i=0;
 		boolean finished=true;
 
-		while (i < xblocknum * yblocknum && finished) {
-			if ((screendata[i]&48)!=0)
+		while (i < xBlocknum * yBlocknum && finished) {
+			if ((screenData[i]&48)!=0)
 				finished = false;
 			i++;
 		}
@@ -404,13 +404,13 @@ public class Game extends Canvas {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 			}
-			if (ghostnum < maxghosts)
-				ghostnum++; 
-			if (currentspeed<maxspeed)
-				currentspeed+=2;
-			scaredtime=scaredtime-20;
-			if (scaredtime<minscaredtime)
-				scaredtime=minscaredtime;
+			if (ghostNum < maxGhosts)
+				ghostNum++; 
+			if (currentSpeed<maxSpeed)
+				currentSpeed+=2;
+			scaredTime=scaredTime-20;
+			if (scaredTime<minScaredTime)
+				scaredTime=minScaredTime;
 			initLevel();
 			drawMaze();
 		}
@@ -418,16 +418,16 @@ public class Game extends Canvas {
 
 	// lock / unlock the ghosts
 	private void updateWalls() {
-		scaredcount--;
-		if (scaredcount<=0)
+		scaredCount--;
+		if (scaredCount<=0)
 			scared=false;
 
 		if (scared) {
-			screendata[6*xblocknum+6]=11;
-			screendata[6*xblocknum+8]=14;
+			screenData[6*xBlocknum+6]=11;
+			screenData[6*xBlocknum+8]=14;
 		} else {
-			screendata[6*xblocknum+6]=10;
-			screendata[6*xblocknum+8]=10;
+			screenData[6*xBlocknum+6]=10;
+			screenData[6*xBlocknum+8]=10;
 		}
 	}
 }
