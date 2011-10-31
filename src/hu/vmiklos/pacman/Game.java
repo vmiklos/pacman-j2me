@@ -121,6 +121,7 @@ public class Game extends Canvas implements Runnable {
 	public void pause() {
 		hint = "Game paused.";
 		paused = true;
+		repaint();
 	}
 	
 	public void resume() {
