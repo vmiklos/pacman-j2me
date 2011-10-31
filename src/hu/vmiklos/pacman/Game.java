@@ -43,7 +43,7 @@ public class Game extends Canvas {
 	private int scaredcount, scaredtime;
 
 	// positions
-	private int[] dx, dy, ghostx, ghosty, ghostdx, ghostdy, ghostspeed;
+	private int[] ghostx, ghosty, ghostdx, ghostdy, ghostspeed;
 	private int pacmanx, pacmany, pacmandx, pacmandy, reqdx, reqdy;
 
 	// the maze
@@ -76,8 +76,6 @@ public class Game extends Canvas {
 		ghosty = new int[maxghosts];
 		ghostdy = new int[maxghosts];
 		ghostspeed = new int[maxghosts];
-		dx=new int[4];
-		dy=new int[4];
 		width = blocksize * xblocknum;
 		height = blocksize * yblocknum;
 		devWidth = getWidth();
@@ -286,6 +284,7 @@ public class Game extends Canvas {
 				if (ghostx[i]%blocksize==0 && ghosty[i]%blocksize==0) {
 					pos=ghostx[i]/blocksize+xblocknum*(int)(ghosty[i]/blocksize);
 					count=0;
+					int[] dx = new int[4], dy = new int[4];
 					// no direction by default
 					for(j=0;j<4;j++) {
 						dx[j]=0;
