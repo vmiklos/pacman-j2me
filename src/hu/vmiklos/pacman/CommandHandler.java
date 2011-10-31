@@ -26,6 +26,11 @@ public class CommandHandler implements CommandListener {
 		addedCommands = new Vector();
 	}
 	
+	public void pause() {
+		setCommands(resumeCmd, stopCmd);
+		pacman.getGame().pause();
+	}
+	
 	public Command getStartCmd() {
 		return startCmd;
 	}
@@ -70,8 +75,7 @@ public class CommandHandler implements CommandListener {
 			setCommands(startCmd, null);
 			pacman.getGame().stop();
 		} else if (c == pauseCmd) {
-			setCommands(resumeCmd, stopCmd);
-			pacman.getGame().pause();
+			pause();
 		} else if (c == resumeCmd) {
 			setCommands(pauseCmd, stopCmd);
 			pacman.getGame().resume();

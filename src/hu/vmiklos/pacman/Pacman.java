@@ -34,7 +34,7 @@ public class Pacman extends MIDlet
 	}
 	
 	public void pauseApp() {
-		commandHandler.commandAction(commandHandler.getPauseCmd(), null);
+		commandHandler.pause();
 	}
 
 	public void destroyApp(boolean unconditional) {
