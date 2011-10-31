@@ -5,43 +5,71 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.StringItem;
 import javax.microedition.midlet.MIDlet;
-import javax.microedition.midlet.MIDletStateChangeException;
 
-public class Pacman extends MIDlet implements CommandListener {
+public class Pacman extends MIDlet implements CommandListener
+{
+	private Game game;
+	private Command helpCmd = new Command("Help", Command.SCREEN, 1);
+	private Command exitCmd = new Command("Exit", Command.SCREEN, 2);
+	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 3);
+	private Command okCmd = new Command("OK", Command.SCREEN, 1);
 
-	private Form form;
-	private Display display;
-	private Command exitCommand;
-	
-	public Pacman() {
-		form = new Form("Pacman");
-		display = Display.getDisplay(this);
-		exitCommand = new Command("Exit", Command.SCREEN, 1);
+	public Pacman()
+	{
+		game = new Game();
+		game.addCommand(helpCmd);
+		game.addCommand(exitCmd);
+		game.addCommand(cancelCmd);
+		game.setCommandListener(this);
 	}
 
-	protected void destroyApp(boolean unconditional)
-			throws MIDletStateChangeException {
+	public void startApp()
+	{
+		Display.getDisplay(this).setCurrent(game);
+		Thread myThread = new Thread(game);
+		myThread.start();
 	}
 
-	protected void pauseApp() {
+	public void pauseApp()
+	{
 	}
 
-	protected void startApp() throws MIDletStateChangeException {
-		form.addCommand(exitCommand);
-		form.setCommandListener(this);
-		form.append("Hello World!");
-		display.setCurrent(form);
+	public void destroyApp(boolean unconditional)
+	{
+		Display.getDisplay(this).setCurrent(null);
 	}
 
-	public void commandAction(Command c, Displayable d) {
-		if (c == exitCommand) {
-			try {
-				destroyApp(true);
-			} catch (MIDletStateChangeException e) {
-			}
+	public void commandAction(Command c, Displayable s)
+	{
+		if (c == exitCmd)
+		{
+			destroyApp(false);
 			notifyDestroyed();
 		}
+		else if (c == helpCmd)
+		{
+			Item[] levelItem =
+			{
+				new StringItem("", "Guide the yellow Pacman " +
+						"around the maze and eat all the " +
+						"little black dots whilst " +
+						"avoiding those nasty red " +
+						"ghosts! Use the key 5 to start " +
+						"the game, 2, 4, 6 and 8 to move " +
+						"Pacman up, left, right and " +
+						"down, respectively.")
+			};
+			Form form = new Form("Help", levelItem);
+			form.addCommand(okCmd);
+			form.setCommandListener(this);
+			Display.getDisplay(this).setCurrent(form);
+		}
+		else if ((c == cancelCmd) || (c == okCmd))
+		{
+			Display.getDisplay(this).setCurrent(game);
+		}
 	}
-
 }
