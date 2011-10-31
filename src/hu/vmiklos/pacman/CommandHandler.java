@@ -9,7 +9,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 
 public class CommandHandler implements CommandListener {
-
 	private Pacman pacman;
 	private Command pauseCmd = new Command("Pause", Command.SCREEN, 1);
 	private Command resumeCmd = new Command("Resume", Command.SCREEN, 1);
@@ -24,43 +23,9 @@ public class CommandHandler implements CommandListener {
 	public CommandHandler(Pacman pacman) {
 		this.pacman = pacman;
 		addedCommands = new Vector();
+		setCommands(startCmd, null);
 	}
 	
-	public void pause() {
-		setCommands(resumeCmd, stopCmd);
-		pacman.getGame().pause();
-	}
-	
-	public Command getStartCmd() {
-		return startCmd;
-	}
-	
-	public Command getStopCmd() {
-		return stopCmd;
-	}
-	
-	public Command getPauseCmd() {
-		return pauseCmd;
-	}
-
-	private void addCommand(Command c) {
-		pacman.getGame().addCommand(c);
-		addedCommands.addElement(c);
-	}
-	
-	public void setCommands(Command first, Command second) {
-		for (int i = 0; i < addedCommands.size(); i++) {
-			pacman.getGame().removeCommand((Command)addedCommands.elementAt(i));
-		}
-		addedCommands.removeAllElements();
-		addCommand(first);
-		if (second != null)
-			addCommand(second);
-		addCommand(helpCmd);
-		addCommand(exitCmd);
-		addCommand(cancelCmd);
-	}
-
 	public void commandAction(Command c, Displayable s) {
 		if (c == exitCmd) {
 			pacman.exit();
@@ -81,10 +46,32 @@ public class CommandHandler implements CommandListener {
 			pacman.getGame().resume();
 		}
 	}
+
+	public void pause() {
+		setCommands(resumeCmd, stopCmd);
+		pacman.getGame().pause();
+	}
 	
 	public void form(Form form) {
 		form.addCommand(okCmd);
 		form.setCommandListener(this);
 	}
 
+	private void addCommand(Command c) {
+		pacman.getGame().addCommand(c);
+		addedCommands.addElement(c);
+	}
+	
+	private void setCommands(Command first, Command second) {
+		for (int i = 0; i < addedCommands.size(); i++) {
+			pacman.getGame().removeCommand((Command)addedCommands.elementAt(i));
+		}
+		addedCommands.removeAllElements();
+		addCommand(first);
+		if (second != null)
+			addCommand(second);
+		addCommand(helpCmd);
+		addCommand(exitCmd);
+		addCommand(cancelCmd);
+	}
 }
