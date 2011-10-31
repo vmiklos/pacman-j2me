@@ -334,8 +334,8 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		graphics.setColor(0, 0, 0);
-		graphics.drawString("Score: " + score, 0, toPixel(height)+((devHeight-toPixel(height)-font.getHeight())/2),
-				Graphics.TOP | Graphics.LEFT);
+		int bottomPos = toPixel(height)+((devHeight-toPixel(height)-font.getHeight())/2);
+		graphics.drawString("Score: " + score, devWidth, bottomPos, Graphics.TOP | Graphics.RIGHT);
 		g.drawImage(image, 0, 0, 0);
 	}
 
