@@ -65,8 +65,10 @@ public class Game extends Canvas implements Runnable {
 	private short[] screendata;
 	private Font font;
 	private Pacman pacman;
+	private String hint;
 
 	public Game(Pacman pacman) {
+		hint = "App started!";
 		this.pacman = pacman;
 		screendata = new short[xblocknum*yblocknum];
 		ghostx = new int[maxghosts];
@@ -105,20 +107,24 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void start() {
+		hint = "Game started!";
 		started = true;
 		init();
 	}
 	
 	public void stop() {
+		hint = "Game ended.";
 		started = false;
 		initLevel();
 	}
 	
 	public void pause() {
+		hint = "Game paused.";
 		paused = true;
 	}
 	
 	public void resume() {
+		hint = "Game resumed!";
 		paused = false;
 	}
 
@@ -201,6 +207,7 @@ public class Game extends Canvas implements Runnable {
 					pacsleft--;
 					if(pacsleft == 0) {
 						started = false;
+						hint = "Game over!";
 						pacman.getCommandHandler().stop();
 					}
 					initLevel();
@@ -336,6 +343,7 @@ public class Game extends Canvas implements Runnable {
 		graphics.setColor(0, 0, 0);
 		int bottomPos = toPixel(height)+((devHeight-toPixel(height)-font.getHeight())/2);
 		graphics.drawString("Score: " + score, devWidth, bottomPos, Graphics.TOP | Graphics.RIGHT);
+		graphics.drawString(hint, 0, bottomPos, Graphics.TOP | Graphics.LEFT);
 		g.drawImage(image, 0, 0, 0);
 	}
 

@@ -38,6 +38,7 @@ public class CommandHandler implements CommandListener {
 			pacman.getGame().start();
 		} else if (c == stopCmd) {
 			stop();
+			pacman.getGame().stop();
 		} else if (c == pauseCmd) {
 			pause();
 		} else if (c == resumeCmd) {
@@ -53,7 +54,6 @@ public class CommandHandler implements CommandListener {
 	
 	public void stop() {
 		setCommands(startCmd, null);
-		pacman.getGame().stop();
 	}
 	
 	public void form(Form form) {
