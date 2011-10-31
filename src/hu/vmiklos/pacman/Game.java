@@ -136,28 +136,28 @@ public class Game extends Canvas implements Runnable
 	{
 		if(ingame)
 		{
-			if(key == Canvas.KEY_NUM4 || key == -3)
+			if(key == Canvas.KEY_NUM4 || key == Canvas.LEFT || key == -3)
 			{
 				reqdx = -1;
 				reqdy = 0;
 			}
-			else if(key == Canvas.KEY_NUM6 || key == -4)
+			else if(key == Canvas.KEY_NUM6 || key == Canvas.RIGHT || key == -4)
 			{
 				reqdx = 1;
 				reqdy = 0;
 			}
-			else if(key == Canvas.KEY_NUM2 || key == -1)
+			else if(key == Canvas.KEY_NUM2 || key == Canvas.UP || key == -1)
 			{
 				reqdx = 0;
 				reqdy = -1;
 			}
-			else if(key == Canvas.KEY_NUM8 || key == -2)
+			else if(key == Canvas.KEY_NUM8 || key == Canvas.DOWN || key == -2)
 			{
 				reqdx = 0;
 				reqdy = 1;
 			}
 		}
-		else if(key == Canvas.KEY_NUM5)
+		else if(key == Canvas.KEY_NUM5 || key == Canvas.FIRE || key == -5)
 		{
 			ingame = true;
 			GameInit();
