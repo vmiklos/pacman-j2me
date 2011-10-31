@@ -83,7 +83,7 @@ public class Game extends Canvas implements Runnable {
 		devHeight = getHeight();
 		init();
 		blocksize = 24;
-		ratio = ((float)Math.min(devHeight-font.getHeight(), devWidth)) / ((float)Math.max(height, width));
+		ratio = (float)Math.min(devHeight-font.getHeight(), devWidth) / Math.max(height, width);
 	}
 
 	public void run() {
