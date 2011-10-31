@@ -22,6 +22,7 @@ public class Game extends Canvas implements Runnable {
 	private final int maxghosts = 12;
 	private final int minscaredtime = 20;
 	private final int maxspeed = 6;
+	// valid speeds of ghosts
 	private final int validspeeds[] = { 1, 2, 3, 3, 4, 4 };
 	private final int xblocknum = 15;
 	private final int yblocknum = 13;
@@ -77,6 +78,41 @@ public class Game extends Canvas implements Runnable {
 			blocksize = height/yblocknum;
 		else
 			blocksize = width/xblocknum;
+	}
+
+	public void run() {
+		long  starttime;
+
+		while(true) {
+			starttime=System.currentTimeMillis();
+			try {
+				if (!paused)
+					repaint();
+				// 25fps -> wait at least 40ms if repaint() was faster
+				starttime += 40;
+				Thread.sleep(Math.max(0, starttime-System.currentTimeMillis()));
+			} catch(java.lang.InterruptedException ie) {
+				break;
+			}
+		}
+	}
+
+	public void start() {
+		started = true;
+		GameInit();
+	}
+	
+	public void stop() {
+		started = false;
+		LevelInit();
+	}
+	
+	public void pause() {
+		paused = true;
+	}
+	
+	public void resume() {
+		paused = false;
 	}
 
 	// starts a demo or a game
@@ -140,24 +176,6 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	public void start() {
-		started = true;
-		GameInit();
-	}
-	
-	public void stop() {
-		started = false;
-		LevelInit();
-	}
-	
-	public void pause() {
-		paused = true;
-	}
-	
-	public void resume() {
-		paused = false;
-	}
-
 	protected void paint(Graphics g) {
 		int x, y;
 		short i = 0;
@@ -333,7 +351,6 @@ public class Game extends Canvas implements Runnable {
 				}
 				ghostx[i]=ghostx[i]+(ghostdx[i]*ghostspeed[i]);
 				ghosty[i]=ghosty[i]+(ghostdy[i]*ghostspeed[i]);
-				//graphics.drawString("random: "+ num , 0, 150, g.TOP|g.LEFT);
 				graphics.setColor(255, 0, 0);
 				graphics.fillRect(ghostx[i]+1, ghosty[i]+1, blocksize-1, blocksize-1);
 
@@ -394,23 +411,6 @@ public class Game extends Canvas implements Runnable {
 				scaredtime=minscaredtime;
 			LevelInit();
 			DrawMaze();
-		}
-	}
-
-	public void run() {
-		long  starttime;
-
-		while(true) {
-			starttime=System.currentTimeMillis();
-			try {
-				if (!paused)
-					repaint();
-				// 25fps -> wait at least 40ms if repaint() was faster
-				starttime += 40;
-				Thread.sleep(Math.max(0, starttime-System.currentTimeMillis()));
-			} catch(java.lang.InterruptedException ie) {
-				break;
-			}
 		}
 	}
 }
