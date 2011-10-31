@@ -7,8 +7,6 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.StringItem;
 
 public class CommandHandler implements CommandListener {
 
@@ -52,19 +50,9 @@ public class CommandHandler implements CommandListener {
 
 	public void commandAction(Command c, Displayable s) {
 		if (c == exitCmd) {
-			pacman.destroyApp(false);
-			pacman.notifyDestroyed();
-		}
-		else if (c == helpCmd) {
-			Item[] levelItem = {
-				new StringItem("", "Guide the yellow Pacman around the maze and eat all the little black dots whilst "+
-						"avoiding those nasty red ghosts! If you like the number buttons, use 2, 4, 6 and 8 to move "+
-						"Pacman up, left, right and down, respectively.")
-			};
-			Form form = new Form("Help", levelItem);
-			form.addCommand(okCmd);
-			form.setCommandListener(this);
-			Display.getDisplay(pacman).setCurrent(form);
+			pacman.exit();
+		} else if (c == helpCmd) {
+			pacman.help();
 		} else if ((c == cancelCmd) || (c == okCmd)) {
 			Display.getDisplay(pacman).setCurrent(pacman.getGame());
 		} else if (c == startCmd) {
@@ -74,6 +62,11 @@ public class CommandHandler implements CommandListener {
 			setCommands(startCmd);
 			pacman.getGame().stop();
 		}
+	}
+	
+	public void form(Form form) {
+		form.addCommand(okCmd);
+		form.setCommandListener(this);
 	}
 
 }
