@@ -8,6 +8,9 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 
+/**
+ * Handles commands of the game.
+ */
 public class CommandHandler implements CommandListener {
 	private Pacman pacman;
 	private Command pauseCmd = new Command("Pause", Command.SCREEN, 1);

@@ -6,6 +6,9 @@ import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.StringItem;
 import javax.microedition.midlet.MIDlet;
 
+/**
+ * Entry point of the game.
+ */
 public class Pacman extends MIDlet
 {
 	private Game game;
@@ -28,12 +31,12 @@ public class Pacman extends MIDlet
 		return commandHandler;
 	}
 	
+	/**
+	 * Noop:
+	 * 1) If this is a real start, we did everything in the ctor already.
+	 * 2) Else we don't resume automatically, better if the user does so.
+	 */
 	public void startApp() {
-		/**
-		 * Noop:
-		 * 1) If this is a real start, we did everything in the ctor already.
-		 * 2) Else we don't resume automatically, better if the user does so.
-		 */
 	}
 	
 	public void pauseApp() {

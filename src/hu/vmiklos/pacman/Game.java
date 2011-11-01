@@ -6,6 +6,9 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
+/**
+ * The model and controller of the game.
+ */
 public class Game extends Canvas {
 	private int devWidth;
 	private int devHeight;
@@ -117,7 +120,9 @@ public class Game extends Canvas {
 		paused = false;
 	}
 
-	// resets the state of the level (after a death, etc)
+	/**
+	 * Resets the state of the level (after a death, etc).
+	 */
 	public void initLevel() {
 		short i;
 		int dx = 1;
@@ -140,6 +145,9 @@ public class Game extends Canvas {
 		scared = false;
 	}
 
+	/**
+	 * Handles the keyboard.
+	 */
 	protected void keyPressed(int key) {
 		if(started) {
 			if(key == Canvas.KEY_NUM4 || key == Canvas.LEFT || key == -3) {
@@ -158,6 +166,9 @@ public class Game extends Canvas {
 		}
 	}
 	
+	/**
+	 * Paints the canvas, incl. stepping the models.
+	 */
 	protected void paint(Graphics g) {
 		int x, y;
 		short i = 0;
@@ -368,7 +379,9 @@ public class Game extends Canvas {
 		return (int)(p * ratio);
 	}
 
-	// starts a demo or a game
+	/**
+	 * Resets the status to start a demo or a game.
+	 */
 	private void init() {
 		pacsLeft = 3;
 		score = 0;
@@ -376,19 +389,21 @@ public class Game extends Canvas {
 		initLevel();
 		ghostNum = 6;
 		currentSpeed = 4;
-		drawMaze();
+		resetMaze();
 	}
 
-	// draws the maze from scratch (after a death, after a completed level)
-	private void drawMaze() {
-		int i;
-
-		for (i = 0; i<xBlocknum*yBlocknum; i++) {
+	/**
+	 * Reset maze status.
+	 */
+	private void resetMaze() {
+		for (int i = 0; i<xBlocknum*yBlocknum; i++) {
 			screenData[i]=levelData[i];
 		}
 	}
 
-	// checks if this is the end of the game or not
+	/**
+	 * Checks if this is the end of the current level or not.
+	 */
 	private void checkMaze() {
 		short i=0;
 		boolean finished=true;
@@ -412,11 +427,13 @@ public class Game extends Canvas {
 			if (scaredTime<minScaredTime)
 				scaredTime=minScaredTime;
 			initLevel();
-			drawMaze();
+			resetMaze();
 		}
 	}
 
-	// lock / unlock the ghosts
+	/**
+	 * Lock / unlock the ghosts.
+	 */
 	private void updateWalls() {
 		scaredCount--;
 		if (scaredCount<=0)

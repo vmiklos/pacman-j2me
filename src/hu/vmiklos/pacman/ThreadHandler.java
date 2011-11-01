@@ -1,5 +1,8 @@
 package hu.vmiklos.pacman;
 
+/**
+ * Handles the background thread of the game.
+ */
 public class ThreadHandler implements Runnable {
 	private Game game;
 	
