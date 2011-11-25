@@ -19,7 +19,8 @@ public class CommandHandler implements CommandListener {
 	private Command stopCmd = new Command("Stop", Command.SCREEN, 2);
 	private Command exitCmd = new Command("Exit", Command.SCREEN, 3);
 	private Command helpCmd = new Command("Help", Command.SCREEN, 4);
-	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 5);
+	private Command scoreCmd = new Command("High Score", Command.SCREEN, 5);
+	private Command cancelCmd = new Command("Cancel", Command.SCREEN, 6);
 	private Command okCmd = new Command("OK", Command.SCREEN, 1);
 	private Vector addedCommands;
 	
@@ -34,6 +35,8 @@ public class CommandHandler implements CommandListener {
 			pacman.exit();
 		} else if (c == helpCmd) {
 			pacman.help();
+		} else if (c == scoreCmd) {
+			pacman.score();
 		} else if ((c == cancelCmd) || (c == okCmd)) {
 			Display.getDisplay(pacman).setCurrent(pacman.getGame());
 		} else if (c == startCmd) {
@@ -78,6 +81,7 @@ public class CommandHandler implements CommandListener {
 		if (second != null)
 			addCommand(second);
 		addCommand(helpCmd);
+		addCommand(scoreCmd);
 		addCommand(exitCmd);
 		addCommand(cancelCmd);
 	}

@@ -63,4 +63,16 @@ public class Pacman extends MIDlet
 		commandHandler.form(form);
 		Display.getDisplay(this).setCurrent(form);
 	}
+	
+	public void score() {
+		int score = Storage.getScore();
+		Item[] levelItem = {
+			new StringItem("",
+					(score >= 0 ? "The current high score is: " + Storage.getScore() :
+						"There is no high score yet."))
+		};
+		Form form = new Form("High score", levelItem);
+		commandHandler.form(form);
+		Display.getDisplay(this).setCurrent(form);
+	}
 }

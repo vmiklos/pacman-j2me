@@ -230,6 +230,7 @@ public class Game extends Canvas {
 					if(pacsLeft == 0) {
 						started = false;
 						hint = "Game over!";
+						Storage.setScore(score);
 						pacman.getCommandHandler().stop();
 					}
 					initLevel();
